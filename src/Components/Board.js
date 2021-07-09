@@ -1,17 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import Cell from './Cell';
 
 import '../styles/Board.css';
 
 export default function Board(props) {
 
-  let { row, col } = props;
-  let board = new Array(row).fill(0).map(() => new Array(col).fill(0));
+  let { row, col, start, end } = props;
+  let board = [];
   const [matrix, setMatrix] = useState(board);
 
-  const handleClick = (event) => {
-    const element = document.getElementById(event.target.id);
-    element.classList.toggle("wall");
+  const createBoard = () => {
+    board = [];
+    for (let i = 0; i < row; i++) {
+      let row = [];
+      for (let j = 0; j < col; j++) {
+        row.push({
+          row: i,
+          col: j,
+          isStart: i === start.row && j === start.col,
+          isEnd: i === end.row && j === end.col,
+          isVisited: false
+        })
+      }
+      board.push(row);
+    }
+    setMatrix(board);
   }
+
+  useEffect(() => {
+    createBoard();
+  }, [])
 
   return (
     <div className="board">
@@ -22,8 +40,9 @@ export default function Board(props) {
               {row.map((cell, cell_index) =>
                 <td id={`${row_index}-${cell_index}`}
                   key={`${row_index}-${cell_index}`}
-                  className="table-cell"
-                  onClick={handleClick}></td>
+                  className="table-cell">
+                  <Cell cell={cell} />
+                </td>
               )}
             </tr>
           )}
@@ -35,5 +54,7 @@ export default function Board(props) {
 
 Board.defaultProps = {
   row: 20,
-  col: 50
+  col: 50,
+  start: { row: 8, col: 8 },
+  end: { row: 8, col: 40 }
 }

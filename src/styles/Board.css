@@ -24,7 +24,5 @@
   min-height: 24px;
   border: solid 1px #0c3547;
   margin: 0;
-}
-.table-row .table-cell.wall{
-  background: #0c3547;
+  padding: 0;
 }
