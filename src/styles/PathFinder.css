@@ -3,3 +3,32 @@
   display: flex;
   flex-direction: column;
 }
+
+.board{
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  padding: 20px 12px;
+}
+.board table{
+  border: solid 2px steelblue;
+  border-collapse: collapse;
+}
+.board .board-table{
+  padding: 16px;
+}
+.table-row{
+  margin: 0;
+  padding: 0;
+}
+.table-row .table-cell{
+  background: white;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  min-height: 24px;
+  border: solid 1px #0c3547;
+  margin: 0;
+  padding: 0;
+}
