@@ -12,10 +12,13 @@ let board = [];
 
 export default function PathFinder(props) {
 
-  let { row, col, start, end } = props;
+  let { row, col, initial_start, initial_end } = props;
 
   const [matrix, setMatrix] = useState([]);
   const [isMouseDown, setMouseDown] = useState(false);
+  const [start, setStart] = useState(initial_start);
+  const [end, setEnd] = useState(initial_end);
+  const [isStartRelocating, setStartRelocation] = useState(false);
 
   const createBoard = () => {
     board = [];
@@ -69,7 +72,7 @@ export default function PathFinder(props) {
     visualize_Dijkstra(board);
   }
 
-  const handleMouseDown = (event, row, col) => {
+  const handleClick = (event, row, col) => {
     let cell = board[row][col];
     let { isStart, isEnd, isVisited, isWall } = cell;
     if (!isStart && !isEnd) {
@@ -81,10 +84,39 @@ export default function PathFinder(props) {
   const handleMouseEnter = (event, row, col) => {
     let cell = board[row][col];
     let { isStart, isEnd, isVisited, isWall } = cell;
-    if (!isStart && !isEnd && isMouseDown) {
-      event.target.classList.toggle("wall");
-      board[row][col].isWall = !(board[row][col].isWall);
+    if (isMouseDown) {
+      if (!isStart && !isEnd) {
+        event.target.classList.toggle("wall");
+        board[row][col].isWall = !(board[row][col].isWall);
+      }
     }
+  }
+
+  const handleMouseDown = (event, row, col) => {
+    let cell = board[row][col];
+    let { isStart, isEnd, isVisited, isWall } = cell;
+    if (isStart) {
+      event.target.classList.add("shrink");
+    }
+  }
+
+  const handleMouseLeave = (event, row, col) => {
+    let cell = board[row][col];
+    let { isStart, isEnd, isVisited, isWall } = cell;
+    if (isStart && isMouseDown) {
+      event.target.classList.remove("shrink");
+
+      //change the start node
+      // board[start.row][start.col].isStart = false;
+    }
+  }
+
+  const handleMouseUp = (event, row, col) => {
+    // let cell = board[row][col];
+    // let { isStart, isEnd, isVisited, isWall } = cell;
+    // if (isStart) {
+    //   event.target.classList.remove("shrink");
+    // }
   }
 
   return (
@@ -102,8 +134,11 @@ export default function PathFinder(props) {
                     className="table-cell">
                     <Cell
                       cell={cell}
+                      onClick={(event) => handleClick(event, cell.row, cell.col)}
+                      onMouseEnter={(event) => handleMouseEnter(event, cell.row, cell.col)}
                       onMouseDown={(event) => handleMouseDown(event, cell.row, cell.col)}
-                      onMouseEnter={(event) => handleMouseEnter(event, cell.row, cell.col)} />
+                      onMouseUp={(event) => handleMouseUp(event, cell.row, cell.col)}
+                      onMouseLeave={(event) => handleMouseLeave(event, cell.row, cell.col)} />
                   </td>
                 )}
               </tr>
@@ -118,6 +153,6 @@ export default function PathFinder(props) {
 PathFinder.defaultProps = {
   row: 20,
   col: 50,
-  start: { row: 8, col: 8 },
-  end: { row: 8, col: 40 }
+  initial_start: { row: 8, col: 8 },
+  initial_end: { row: 8, col: 40 }
 }
