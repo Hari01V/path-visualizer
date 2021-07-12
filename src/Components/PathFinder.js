@@ -67,6 +67,8 @@ export default function PathFinder(props) {
     });
     document.querySelector(".board-table").addEventListener("mouseleave", () => {
       setMouseDown(false);
+      setStartRelocation(false);
+      setEndRelocation(false);
     });
     createBoard();
   }, [])
