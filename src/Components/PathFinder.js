@@ -19,6 +19,7 @@ export default function PathFinder(props) {
   const [start, setStart] = useState(initial_start);
   const [end, setEnd] = useState(initial_end);
   const [isStartRelocating, setStartRelocation] = useState(false);
+  const [isEndRelocating, setEndRelocation] = useState(false);
 
   const createBoard = () => {
     board = [];
@@ -55,6 +56,8 @@ export default function PathFinder(props) {
     setMatrix(initial_board);
   }
 
+
+
   useEffect(() => {
     document.querySelector(".board-table").addEventListener("mousedown", () => {
       setMouseDown(true);
@@ -85,9 +88,21 @@ export default function PathFinder(props) {
     let cell = board[row][col];
     let { isStart, isEnd, isVisited, isWall } = cell;
     if (isMouseDown) {
-      if (!isStart && !isEnd) {
+      if (!isStart && !isEnd && !isStartRelocating && !isEndRelocating) {
         event.target.classList.toggle("wall");
         board[row][col].isWall = !(board[row][col].isWall);
+      } else if (isStartRelocating && !isEnd) {
+        board[start.row][start.col].isStart = false;
+        setStart({ row: row, col: col });
+        // event.target.classList.add("shrink");
+        board[row][col].isStart = true;
+        board[row][col].isWall = false;
+      } else if (isEndRelocating && !isStart) {
+        board[end.row][end.col].isEnd = false;
+        setEnd({ row: row, col: col });
+        // event.target.classList.add("shrink");
+        board[row][col].isEnd = true;
+        board[row][col].isWall = false;
       }
     }
   }
@@ -96,27 +111,47 @@ export default function PathFinder(props) {
     let cell = board[row][col];
     let { isStart, isEnd, isVisited, isWall } = cell;
     if (isStart) {
-      event.target.classList.add("shrink");
+      // event.target.classList.add("shrink");
+      setStartRelocation(true);
+      board[row][col].isStart = false;
+      // setMatrix([...matrix, [...matrix[row], { ...matrix[row][col], isStart: false }]]);
+      setMatrix(board);
+    } else if (isEnd) {
+      // event.target.classList.add("shrink");
+      setEndRelocation(true);
+      board[row][col].isEnd = false;
+      // setMatrix([...matrix, [...matrix[row], { ...matrix[row][col], isEnd: false }]]);
+      setMatrix(board);
     }
   }
 
   const handleMouseLeave = (event, row, col) => {
     let cell = board[row][col];
     let { isStart, isEnd, isVisited, isWall } = cell;
-    if (isStart && isMouseDown) {
-      event.target.classList.remove("shrink");
 
-      //change the start node
-      // board[start.row][start.col].isStart = false;
-    }
   }
 
   const handleMouseUp = (event, row, col) => {
-    // let cell = board[row][col];
-    // let { isStart, isEnd, isVisited, isWall } = cell;
-    // if (isStart) {
-    //   event.target.classList.remove("shrink");
-    // }
+    let cell = board[row][col];
+    let { isStart, isEnd, isVisited, isWall } = cell;
+    if (isStartRelocating) {
+      if (!isEnd) {
+        // event.target.classList.remove("shrink");
+        setStart({ row: row, col: col });
+        board[row][col].isStart = true;
+        board[row][col].isWall = false;
+      }
+      setStartRelocation(false);
+    }
+    if (isEndRelocating) {
+      if (!isStart) {
+        // event.target.classList.remove("shrink");
+        setEnd({ row: row, col: col });
+        board[row][col].isEnd = true;
+        board[row][col].isWall = false;
+      }
+      setEndRelocation(false);
+    }
   }
 
   return (

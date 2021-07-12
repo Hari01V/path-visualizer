@@ -9,6 +9,10 @@ export default function Cell(props) {
 
   let class_name = `cell ${isStart ? "start" : ""} ${isEnd ? "end" : ""}`;
 
+  if (row == 0 && col == 0) {
+    console.log("rerendered");
+  }
+
   return (
     <div className={class_name}
       onClick={onClick}
