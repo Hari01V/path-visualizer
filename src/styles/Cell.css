@@ -5,17 +5,18 @@
   transition: transform 1s;
 }
 .cell.start{
-  background: green;
+  background: green !important;
 }
 .cell.end{
-  background: red;
+  background: red !important;
 }
 .cell.wall{
   background: #0c3547;
   animation: grow 0.3s 0s;
 }
 .cell.visited{
-  background: #0cb6ff;
+  animation: visited 1s 0s;
+  background: #75ccff;
 }
 .cell.shrink{
   transform: scale(0.2);
@@ -27,5 +28,20 @@
   }
   to{
     transform: scale(1.2);
+  }
+}
+@keyframes visited{
+  0%{
+    transform: scale(0.3);
+    border-radius: 50%;
+    background: #003483;
+  }
+  80%{
+    background: rgb(122, 255, 182);
+  }
+  100%{
+    transform: scale(1);
+    border-radius: 0%;
+    background: #75ccff;
   }
 }

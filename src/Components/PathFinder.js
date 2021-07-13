@@ -5,6 +5,7 @@ import Navbar from './Navbar';
 import '../styles/PathFinder.css';
 
 import visualize_Dijkstra from '../Algorithms/dijkstra';
+import visualize_BFS from '../Algorithms/bfs';
 
 
 
@@ -74,7 +75,14 @@ export default function PathFinder(props) {
   }, [])
 
   const visualize = () => {
-    visualize_Dijkstra(board);
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[0].length; j++) {
+        board[i][j].isVisited = false;
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
+      }
+    }
+    // visualize_Dijkstra(board);
+    visualize_BFS(board);
   }
 
   const handleClick = (event, row, col) => {
@@ -83,6 +91,7 @@ export default function PathFinder(props) {
     if (!isStart && !isEnd) {
       event.target.classList.toggle("wall");
       board[row][col].isWall = !(board[row][col].isWall);
+      board[row][col].isVisited = false;
     }
   }
 
@@ -93,6 +102,7 @@ export default function PathFinder(props) {
       if (!isStart && !isEnd && !isStartRelocating && !isEndRelocating) {
         event.target.classList.toggle("wall");
         board[row][col].isWall = !(board[row][col].isWall);
+        board[row][col].isVisited = false;
       } else if (isStartRelocating && !isEnd) {
         board[start.row][start.col].isStart = false;
         setStart({ row: row, col: col });
@@ -166,7 +176,7 @@ export default function PathFinder(props) {
             {matrix.map((row, row_index) =>
               <tr id={`row-${row_index}`} key={`row-${row_index}`} className="table-row">
                 {row.map((cell, cell_index) =>
-                  <td id={`${row_index}-${cell_index}`}
+                  <td id={`cell-${row_index}-${cell_index}`}
                     key={`${row_index}-${cell_index}`}
                     className="table-cell">
                     <Cell
