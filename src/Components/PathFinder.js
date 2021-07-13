@@ -89,9 +89,10 @@ export default function PathFinder(props) {
     let cell = board[row][col];
     let { isStart, isEnd, isVisited, isWall } = cell;
     if (!isStart && !isEnd) {
+      event.target.classList.remove("visited");
+      board[row][col].isVisited = false;
       event.target.classList.toggle("wall");
       board[row][col].isWall = !(board[row][col].isWall);
-      board[row][col].isVisited = false;
     }
   }
 
@@ -100,9 +101,10 @@ export default function PathFinder(props) {
     let { isStart, isEnd, isVisited, isWall } = cell;
     if (isMouseDown) {
       if (!isStart && !isEnd && !isStartRelocating && !isEndRelocating) {
+        event.target.classList.remove("visited");
+        board[row][col].isVisited = false;
         event.target.classList.toggle("wall");
         board[row][col].isWall = !(board[row][col].isWall);
-        board[row][col].isVisited = false;
       } else if (isStartRelocating && !isEnd) {
         board[start.row][start.col].isStart = false;
         setStart({ row: row, col: col });

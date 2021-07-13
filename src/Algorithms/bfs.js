@@ -22,7 +22,6 @@ const visualize_BFS = (board) => {
   let wait_time_factor = 20;
   while (!isGoalReached && count < neighbours.length) {
     let neighbour_nodes = find_neighbours(neighbours[count], no_of_rows, no_of_cols, board);
-
     for (let node of neighbour_nodes) {
       let { row, col, isWall, isVisited, isStart, isEnd } = node;
       if (isEnd) {
