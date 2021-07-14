@@ -79,6 +79,7 @@ export default function PathFinder(props) {
       for (let j = 0; j < board[0].length; j++) {
         board[i][j].isVisited = false;
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
       }
     }
     // visualize_Dijkstra(board);
@@ -90,6 +91,7 @@ export default function PathFinder(props) {
     let { isStart, isEnd, isVisited, isWall } = cell;
     if (!isStart && !isEnd) {
       event.target.classList.remove("visited");
+      event.target.classList.remove("path");
       board[row][col].isVisited = false;
       event.target.classList.toggle("wall");
       board[row][col].isWall = !(board[row][col].isWall);
@@ -101,6 +103,7 @@ export default function PathFinder(props) {
     let { isStart, isEnd, isVisited, isWall } = cell;
     if (isMouseDown) {
       if (!isStart && !isEnd && !isStartRelocating && !isEndRelocating) {
+        event.target.classList.remove("path");
         event.target.classList.remove("visited");
         board[row][col].isVisited = false;
         event.target.classList.toggle("wall");

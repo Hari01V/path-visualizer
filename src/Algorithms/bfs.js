@@ -24,7 +24,16 @@ const visualize_BFS = (board) => {
     let neighbour_nodes = find_neighbours(neighbours[count], no_of_rows, no_of_cols, board);
     for (let node of neighbour_nodes) {
       let { row, col, isWall, isVisited, isStart, isEnd } = node;
+      if (!isStart) {
+        node = {
+          ...node, parent: {
+            row: neighbours[count].row,
+            col: neighbours[count].col
+          }
+        };
+      }
       if (isEnd) {
+        neighbours.push(node);
         isGoalReached = true;
         break;
       } else if (!isWall && !isVisited && !isStart) {
@@ -39,6 +48,34 @@ const visualize_BFS = (board) => {
     count++;
   }
 
+  const path = backtrackPath(neighbours);
+  for (let i = path.length - 1; i >= 0; i--) {
+    let { row, col } = path[i];
+    setTimeout(() => {
+      document.querySelector(`#cell-${row}-${col} .cell`).classList.add("path");
+    }, wait_time_factor * time_count);
+    time_count++;
+  }
+}
+
+const backtrackPath = (neighbours) => {
+  let path = [];
+  let neighbours_size = neighbours.length;
+  let count = neighbours_size - 1;
+  if (neighbours[neighbours_size - 1].isEnd) {
+    let node = neighbours[count];
+    while (!(node.isStart) && count > 0) {
+      path.push(node);
+      let { row, col } = node.parent;
+      //find parent
+      while (count > 0 && (neighbours[count].row !== row || neighbours[count].col !== col)) {
+        count--;
+      }
+      node = neighbours[count];
+    }
+  }
+  path.push(neighbours[0]);
+  return path;
 }
 
 const find_neighbours = (node, rows, cols, board) => {
