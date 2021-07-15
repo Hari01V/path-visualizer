@@ -12,10 +12,9 @@ export default function Navbar(props) {
       <h1 className="navbar-brand">Path <br></br>Visualizer</h1>
       <div className="navbar-content">
         <div className="content-1">
-          <Dropdown title={"Algorithm"} list={["Breadth First Search", "Dijkstra's Algorithm"]} />
         </div>
         <div className="content-2">
-
+          <Dropdown title={"Algorithm"} list={["Breadth First Search", "Dijkstra's Algorithm"]} />
         </div>
       </div>
       <button onClick={visualize}
