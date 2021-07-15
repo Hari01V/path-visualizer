@@ -1,0 +1,34 @@
+.navbar{
+  width: 100%;
+  padding: 32px 140px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: solid 2px blueviolet;
+}
+.navbar-brand{
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+.navbar-content{
+  max-width: 100%;
+  padding: 8px 32px;
+  border: solid chartreuse 2px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.navbar .visualize-btn{
+  color: slateblue;
+  font-size: 16px;
+  letter-spacing: 2px;
+  padding: 8px 20px;
+  margin: 8px 20px;
+  border-radius: 8px;
+  border: solid 2px slateblue;
+  outline: none;
+  cursor: pointer;
+}

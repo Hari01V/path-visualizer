@@ -1,4 +1,5 @@
 import React from 'react';
+import Dropdown from '../Components/Dropdown';
 
 import '../styles/Navbar.css';
 
@@ -8,7 +9,17 @@ export default function Navbar(props) {
 
   return (
     <div className="navbar">
-      <button onClick={visualize}>Visualize</button>
-    </div>
+      <h1 className="navbar-brand">Path <br></br>Visualizer</h1>
+      <div className="navbar-content">
+        <div className="content-1">
+          <Dropdown title={"Algorithm"} list={["Breadth First Search", "Dijkstra's Algorithm"]} />
+        </div>
+        <div className="content-2">
+
+        </div>
+      </div>
+      <button onClick={visualize}
+        className="visualize-btn">Visualize</button>
+    </div >
   )
 }
