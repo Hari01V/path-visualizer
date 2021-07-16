@@ -4,4 +4,10 @@
 
 => WHEN RELOCATE THE START NODE, IT RERENDERS EVERYTIME
 
+
+
+=> KEY FOR ALGORITHM
+bfs - Breadth first search
+dijkstra - Dijkstra's Algorithm
+
 */

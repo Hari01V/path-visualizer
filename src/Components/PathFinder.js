@@ -11,6 +11,18 @@ import visualize_BFS from '../Algorithms/bfs';
 
 let board = [];
 
+let OPTIONS = {
+  "algorithm": [
+    { name: "Breadth First Search", value: "bfs", method: visualize_BFS },
+    { name: "Dijkstra's Algorithm", value: "dijkstra", method: visualize_Dijkstra }
+  ],
+  "speed": [
+    { name: "Speed", value: "speed" },
+    { name: "Normal", value: "normal" },
+    { name: "Slow", value: "slow" }
+  ]
+}
+
 export default function PathFinder(props) {
 
   let { row, col, initial_start, initial_end } = props;
@@ -21,6 +33,7 @@ export default function PathFinder(props) {
   const [end, setEnd] = useState(initial_end);
   const [isStartRelocating, setStartRelocation] = useState(false);
   const [isEndRelocating, setEndRelocation] = useState(false);
+  const [algorithm, setAlgorithm] = useState("bfs");
 
   const createBoard = () => {
     board = [];
@@ -57,8 +70,6 @@ export default function PathFinder(props) {
     setMatrix(initial_board);
   }
 
-
-
   useEffect(() => {
     document.querySelector(".board-table").addEventListener("mousedown", () => {
       setMouseDown(true);
@@ -82,8 +93,11 @@ export default function PathFinder(props) {
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
       }
     }
-    // visualize_Dijkstra(board);
-    visualize_BFS(board);
+
+    const currAlgorithm = OPTIONS.algorithm.find(item => item.value === algorithm);
+    if (currAlgorithm) {
+      currAlgorithm.method(board);
+    }
   }
 
   const handleClick = (event, row, col) => {
@@ -173,7 +187,7 @@ export default function PathFinder(props) {
 
   return (
     <div className="path-finder">
-      <Navbar visualize={visualize} />
+      <Navbar visualize={visualize} setAlgorithm={setAlgorithm} OPTIONS={OPTIONS} />
 
       <div className="board">
         <table>

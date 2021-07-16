@@ -4,7 +4,7 @@ import '../styles/Dropdown.css';
 
 export default function Dropdown(props) {
 
-  let { title, list } = props;
+  let { title, list, setAlgorithm } = props;
   const [isOpen, setOpen] = useState(false);
 
   const handleClick = (event) => {
@@ -15,11 +15,17 @@ export default function Dropdown(props) {
   }
   useEffect(() => {
     document.addEventListener('mousedown', (event) => {
-      if (event.target.parentNode.id !== `dropdown-${title}`) {
+      if (event.target.parentNode.id !== `dropdown-${title}` && event.target.parentNode.className !== `dropdown-list`) {
         setOpen(false);
       }
     })
   }, []);
+
+  const handleSelect = (value) => {
+    if (title === "Algorithm") {
+      setAlgorithm(value);
+    }
+  }
 
   return (
     <div className="dropdown" id={`dropdown-${title}`}
@@ -29,7 +35,9 @@ export default function Dropdown(props) {
       <div className="dropdown-title">{title} <span>v</span></div>
       <ul className="dropdown-list" style={isOpen ? { display: 'block' } : { display: 'none' }}>
         {list.map((item) =>
-          <li className="dropdown-list-item">{item}</li>
+          <li className="dropdown-list-item"
+            key={`dropdown-list-item-${item.value}`}
+            onClick={() => handleSelect(item.value)}>{item.name}</li>
         )}
       </ul>
     </div>
