@@ -19,15 +19,17 @@
 }
 .cell.wall{
   background: #0c3547;
+  transform: scale(1.1);
   animation: grow 0.3s 0s;
 }
 .cell.visited{
-  animation: visited 1s 0s;
-  background: #75ccff;
+  animation: visited 1.4s 0s;
+  background: rgb(70, 181, 255);
 }
 .cell.path{
   background: rgb(255, 255, 91);
   animation: grow 0.3s 0s;
+  transform: scale(1.1);
 }
 
 @keyframes grow{
@@ -46,10 +48,11 @@
   }
   80%{
     background: rgb(122, 255, 182);
+    transform: scale(1.1);
   }
   100%{
     transform: scale(1);
     border-radius: 0%;
-    background: #75ccff;
+    background: rgb(70, 181, 255);
   }
 }

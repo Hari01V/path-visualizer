@@ -5,7 +5,7 @@ import '../styles/Navbar.css';
 
 export default function Navbar(props) {
 
-  let { visualize, setAlgorithm, OPTIONS } = props;
+  let { visualize, setAlgorithm, setSpeed, OPTIONS } = props;
 
   const algoList = OPTIONS["algorithm"];
   const speedList = OPTIONS["speed"];
@@ -18,6 +18,7 @@ export default function Navbar(props) {
         </div>
         <div className="content-2">
           <Dropdown title={"Algorithm"} list={algoList} setAlgorithm={setAlgorithm} />
+          <Dropdown title={"Speed"} list={speedList} setSpeed={setSpeed} />
         </div>
       </div>
       <button onClick={visualize}

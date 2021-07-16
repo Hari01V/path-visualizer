@@ -17,7 +17,7 @@ let OPTIONS = {
     { name: "Dijkstra's Algorithm", value: "dijkstra", method: visualize_Dijkstra }
   ],
   "speed": [
-    { name: "Speed", value: "speed" },
+    { name: "Fast", value: "fast" },
     { name: "Normal", value: "normal" },
     { name: "Slow", value: "slow" }
   ]
@@ -40,6 +40,7 @@ export default function PathFinder(props) {
   const [isStartRelocating, setStartRelocation] = useState(false);
   const [isEndRelocating, setEndRelocation] = useState(false);
   const [algorithm, setAlgorithm] = useState("");
+  const [speed, setSpeed] = useState("fast");
   const [isVisualizing, setVisualizing] = useState(false);
 
   const createBoard = () => {
@@ -109,7 +110,7 @@ export default function PathFinder(props) {
       const currAlgorithm = OPTIONS.algorithm.find(item => item.value === algorithm);
       if (currAlgorithm) {
         setVisualizing(true);
-        currAlgorithm.method(board, setVisualizing);
+        currAlgorithm.method(board, setVisualizing, speed);
       } else {
         const element = document.querySelector(".algo-desc");
         element.style.transform = "scale(1.1)";
@@ -207,7 +208,7 @@ export default function PathFinder(props) {
 
   return (
     <div className="path-finder">
-      <Navbar visualize={visualize} setAlgorithm={setAlgorithm} OPTIONS={OPTIONS} />
+      <Navbar visualize={visualize} setAlgorithm={setAlgorithm} setSpeed={setSpeed} OPTIONS={OPTIONS} />
       <div className="algo-desc"></div>
       <div className="search-result">{isVisualizing ? "IN PROCESS" : "ENDED"}</div>
       <div className="board">

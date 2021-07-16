@@ -1,4 +1,4 @@
-const visualize_BFS = (board, setVisualizing) => {
+const visualize_BFS = (board, setVisualizing, speed) => {
   let no_of_rows = board.length;
   let no_of_cols = board[0].length;
 
@@ -20,6 +20,13 @@ const visualize_BFS = (board, setVisualizing) => {
   var count = 0;
   let time_count = 1;
   let wait_time_factor = 20;
+  if (speed === "fast") {
+    wait_time_factor = 10;
+  } else if (speed === "normal") {
+    wait_time_factor = 60;
+  } else if (speed === "slow") {
+    wait_time_factor = 200;
+  }
   while (!isGoalReached && count < neighbours.length) {
     let neighbour_nodes = find_neighbours(neighbours[count], no_of_rows, no_of_cols, board);
     for (let node of neighbour_nodes) {

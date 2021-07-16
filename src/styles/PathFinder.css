@@ -29,7 +29,7 @@
   padding: 20px 12px;
 }
 .board table{
-  border: solid 2px steelblue;
+  border: solid 2px #8bd8f8;
   border-collapse: collapse;
 }
 .board .board-table{
@@ -45,7 +45,7 @@
   min-width: 24px;
   height: 24px;
   min-height: 24px;
-  border: solid 1px #0c3547;
+  border: solid 1px #8bd8f8;
   margin: 0;
   padding: 0;
 }

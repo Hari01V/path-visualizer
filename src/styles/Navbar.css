@@ -2,7 +2,7 @@
   color: white;
   width: 100%;
   background: #0c3547;
-  padding: 12px 140px;
+  padding: 0 140px;
   box-sizing: border-box;
   display: flex;
   justify-content: space-between;
@@ -29,13 +29,21 @@
   align-items: center;
 }
 .navbar .visualize-btn{
-  color: steelblue;
+  color: #002433;
   font-size: 16px;
   letter-spacing: 2px;
   padding: 8px 20px;
   margin: 8px 20px;
   border-radius: 8px;
-  border: solid 2px steelblue;
+  text-transform: uppercase;
+  font-family: monospace;
+  font-size: 16px;
+  border: solid 2px #002433;
   outline: none;
   cursor: pointer;
+  user-select: none;
+}
+.navbar .visualize-btn:hover{
+  color: white;
+  background: #002433;
 }
