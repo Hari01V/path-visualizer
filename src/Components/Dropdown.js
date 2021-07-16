@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import useToggle from '../hooks/useToggle';
 
 import '../styles/Dropdown.css';
 
 export default function Dropdown(props) {
 
   let { title, list } = props;
-  // const [isOpen, toggleOpen] = useToggle(false);
   const [isOpen, setOpen] = useState(false);
 
   const handleClick = (event) => {
@@ -17,15 +15,18 @@ export default function Dropdown(props) {
   }
   useEffect(() => {
     document.addEventListener('mousedown', (event) => {
-      setOpen(false);
+      if (event.target.parentNode.id !== `dropdown-${title}`) {
+        setOpen(false);
+      }
     })
   }, []);
 
   return (
-    <div className="dropdown">
-      <div className="dropdown-title" onClick={handleClick}
-        style={isOpen ? { background: '#002433' } : {}}
-        aria-controls="simple-menu" aria-haspopup="true">{title} <span>v</span></div>
+    <div className="dropdown" id={`dropdown-${title}`}
+      onClick={handleClick}
+      style={isOpen ? { background: '#002433' } : {}}
+      aria-controls="simple-menu" aria-haspopup="true">
+      <div className="dropdown-title">{title} <span>v</span></div>
       <ul className="dropdown-list" style={isOpen ? { display: 'block' } : { display: 'none' }}>
         {list.map((item) =>
           <li className="dropdown-list-item">{item}</li>

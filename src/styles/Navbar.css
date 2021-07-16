@@ -21,6 +21,11 @@
   justify-content: center;
   align-items: center;
 }
+.navbar-content .content-2{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .navbar .visualize-btn{
   color: steelblue;
   font-size: 16px;

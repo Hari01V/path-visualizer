@@ -4,6 +4,7 @@
   margin: 0px 12px;
   cursor: pointer;
   position: relative;
+  border-radius: 6px;
 }
 .dropdown-title{
   color: inherit;
@@ -11,14 +12,13 @@
   font-weight: 400;
   letter-spacing: 1px;
   padding: 8px 16px;
-  border-radius: 6px;
   user-select: none;
 }
 .dropdown-title span{
   font-size: 16px;
   margin: 2px;
 }
-.dropdown-title:hover{
+.dropdown:hover{
   background: #002433;
 }
 .dropdown-list{
