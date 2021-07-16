@@ -1,6 +1,5 @@
 .dropdown{
   color: white;
-  padding: 0px 8px;
   margin: 0px 12px;
   cursor: pointer;
   position: relative;
@@ -11,12 +10,14 @@
   font-size: 17px;
   font-weight: 400;
   letter-spacing: 1px;
-  padding: 8px 16px;
+  padding: 8px 24px;
   user-select: none;
+  display: flex;
+  align-items: center;
 }
-.dropdown-title span{
-  font-size: 16px;
-  margin: 2px;
+.dropdown-title svg{
+  width: 28px;
+  height: 28px;
 }
 .dropdown:hover{
   background: #002433;
@@ -32,6 +33,7 @@
   top: 100%;
   left: 50%;
   transform: translate(-50%, 0);
+  z-index: 100;
 }
 .dropdown-list .dropdown-list-item{
   padding: 6px 12px;

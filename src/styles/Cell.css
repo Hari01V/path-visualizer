@@ -3,12 +3,19 @@
   height: 100%;
   user-select: none;
   transition: transform 1s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.cell svg{
+  width: 20px;
+  height: 20px;
 }
 .cell.start{
-  background: green !important;
+  color: green;
 }
 .cell.end{
-  background: red !important;
+  color: red;
 }
 .cell.wall{
   background: #0c3547;
@@ -21,9 +28,6 @@
 .cell.path{
   background: rgb(255, 255, 91);
   animation: grow 0.3s 0s;
-}
-.cell.shrink{
-  transform: scale(0.2);
 }
 
 @keyframes grow{

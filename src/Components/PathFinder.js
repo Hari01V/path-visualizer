@@ -23,6 +23,12 @@ let OPTIONS = {
   ]
 }
 
+let ALGO_DESC = {
+  "": "Pick an Algorithm!",
+  "bfs": "Breath-first Search is <strong>unweighted</strong> and <strong>guarantees</strong> the shortest path!",
+  "dijkstra": "Dijkstra's Algorithm is <strong>weighted</strong> and <strong>guarantees</strong> the shortest path!"
+}
+
 export default function PathFinder(props) {
 
   let { row, col, initial_start, initial_end } = props;
@@ -33,7 +39,8 @@ export default function PathFinder(props) {
   const [end, setEnd] = useState(initial_end);
   const [isStartRelocating, setStartRelocation] = useState(false);
   const [isEndRelocating, setEndRelocation] = useState(false);
-  const [algorithm, setAlgorithm] = useState("bfs");
+  const [algorithm, setAlgorithm] = useState("");
+  const [isVisualizing, setVisualizing] = useState(false);
 
   const createBoard = () => {
     board = [];
@@ -85,25 +92,40 @@ export default function PathFinder(props) {
     createBoard();
   }, [])
 
-  const visualize = () => {
-    for (let i = 0; i < board.length; i++) {
-      for (let j = 0; j < board[0].length; j++) {
-        board[i][j].isVisited = false;
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
-      }
-    }
+  useEffect(() => {
+    document.querySelector(".algo-desc").innerHTML = ALGO_DESC[algorithm];
+  }, [algorithm])
 
-    const currAlgorithm = OPTIONS.algorithm.find(item => item.value === algorithm);
-    if (currAlgorithm) {
-      currAlgorithm.method(board);
+  const visualize = () => {
+    if (!isVisualizing) {
+      for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[0].length; j++) {
+          board[i][j].isVisited = false;
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
+        }
+      }
+
+      const currAlgorithm = OPTIONS.algorithm.find(item => item.value === algorithm);
+      if (currAlgorithm) {
+        setVisualizing(true);
+        currAlgorithm.method(board, setVisualizing);
+      } else {
+        const element = document.querySelector(".algo-desc");
+        element.style.transform = "scale(1.1)";
+        element.style.color = 'red';
+        setTimeout(() => {
+          element.style.transform = "scale(1)";
+          element.style.color = 'black';
+        }, 1000);
+      }
     }
   }
 
   const handleClick = (event, row, col) => {
     let cell = board[row][col];
     let { isStart, isEnd, isVisited, isWall } = cell;
-    if (!isStart && !isEnd) {
+    if (!isVisualizing && !isStart && !isEnd) {
       event.target.classList.remove("visited");
       event.target.classList.remove("path");
       board[row][col].isVisited = false;
@@ -115,7 +137,7 @@ export default function PathFinder(props) {
   const handleMouseEnter = (event, row, col) => {
     let cell = board[row][col];
     let { isStart, isEnd, isVisited, isWall } = cell;
-    if (isMouseDown) {
+    if (!isVisualizing && isMouseDown) {
       if (!isStart && !isEnd && !isStartRelocating && !isEndRelocating) {
         event.target.classList.remove("path");
         event.target.classList.remove("visited");
@@ -125,13 +147,11 @@ export default function PathFinder(props) {
       } else if (isStartRelocating && !isEnd) {
         board[start.row][start.col].isStart = false;
         setStart({ row: row, col: col });
-        // event.target.classList.add("shrink");
         board[row][col].isStart = true;
         board[row][col].isWall = false;
       } else if (isEndRelocating && !isStart) {
         board[end.row][end.col].isEnd = false;
         setEnd({ row: row, col: col });
-        // event.target.classList.add("shrink");
         board[row][col].isEnd = true;
         board[row][col].isWall = false;
       }
@@ -141,18 +161,18 @@ export default function PathFinder(props) {
   const handleMouseDown = (event, row, col) => {
     let cell = board[row][col];
     let { isStart, isEnd, isVisited, isWall } = cell;
-    if (isStart) {
-      // event.target.classList.add("shrink");
-      setStartRelocation(true);
-      board[row][col].isStart = false;
-      // setMatrix([...matrix, [...matrix[row], { ...matrix[row][col], isStart: false }]]);
-      setMatrix(board);
-    } else if (isEnd) {
-      // event.target.classList.add("shrink");
-      setEndRelocation(true);
-      board[row][col].isEnd = false;
-      // setMatrix([...matrix, [...matrix[row], { ...matrix[row][col], isEnd: false }]]);
-      setMatrix(board);
+    if (!isVisualizing) {
+      if (isStart) {
+        setStartRelocation(true);
+        board[row][col].isStart = false;
+        // setMatrix([...matrix, [...matrix[row], { ...matrix[row][col], isStart: false }]]);
+        setMatrix(board);
+      } else if (isEnd) {
+        setEndRelocation(true);
+        board[row][col].isEnd = false;
+        // setMatrix([...matrix, [...matrix[row], { ...matrix[row][col], isEnd: false }]]);
+        setMatrix(board);
+      }
     }
   }
 
@@ -165,30 +185,31 @@ export default function PathFinder(props) {
   const handleMouseUp = (event, row, col) => {
     let cell = board[row][col];
     let { isStart, isEnd, isVisited, isWall } = cell;
-    if (isStartRelocating) {
-      if (!isEnd) {
-        // event.target.classList.remove("shrink");
-        setStart({ row: row, col: col });
-        board[row][col].isStart = true;
-        board[row][col].isWall = false;
+    if (!isVisualizing) {
+      if (isStartRelocating) {
+        if (!isEnd) {
+          setStart({ row: row, col: col });
+          board[row][col].isStart = true;
+          board[row][col].isWall = false;
+        }
+        setStartRelocation(false);
       }
-      setStartRelocation(false);
-    }
-    if (isEndRelocating) {
-      if (!isStart) {
-        // event.target.classList.remove("shrink");
-        setEnd({ row: row, col: col });
-        board[row][col].isEnd = true;
-        board[row][col].isWall = false;
+      if (isEndRelocating) {
+        if (!isStart) {
+          setEnd({ row: row, col: col });
+          board[row][col].isEnd = true;
+          board[row][col].isWall = false;
+        }
+        setEndRelocation(false);
       }
-      setEndRelocation(false);
     }
   }
 
   return (
     <div className="path-finder">
       <Navbar visualize={visualize} setAlgorithm={setAlgorithm} OPTIONS={OPTIONS} />
-
+      <div className="algo-desc"></div>
+      <div className="search-result">{isVisualizing ? "IN PROCESS" : "ENDED"}</div>
       <div className="board">
         <table>
           <tbody className="board-table">

@@ -1,4 +1,4 @@
-const visualize_BFS = (board) => {
+const visualize_BFS = (board, setVisualizing) => {
   let no_of_rows = board.length;
   let no_of_cols = board[0].length;
 
@@ -53,6 +53,9 @@ const visualize_BFS = (board) => {
     let { row, col } = path[i];
     setTimeout(() => {
       document.querySelector(`#cell-${row}-${col} .cell`).classList.add("path");
+      if (i == 0) {
+        setVisualizing(false);
+      }
     }, wait_time_factor * time_count);
     time_count++;
   }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 import '../styles/Dropdown.css';
 
@@ -15,8 +16,10 @@ export default function Dropdown(props) {
   }
   useEffect(() => {
     document.addEventListener('mousedown', (event) => {
-      if (event.target.parentNode.id !== `dropdown-${title}` && event.target.parentNode.className !== `dropdown-list`) {
-        setOpen(false);
+      if (event.target && event.target.parentNode) {
+        if (event.target.parentNode.id !== `dropdown-${title}` && event.target.parentNode.className !== `dropdown-list`) {
+          setOpen(false);
+        }
       }
     })
   }, []);
@@ -32,7 +35,7 @@ export default function Dropdown(props) {
       onClick={handleClick}
       style={isOpen ? { background: '#002433' } : {}}
       aria-controls="simple-menu" aria-haspopup="true">
-      <div className="dropdown-title">{title} <span>v</span></div>
+      <div className="dropdown-title">{title} <ArrowDropDownIcon /></div>
       <ul className="dropdown-list" style={isOpen ? { display: 'block' } : { display: 'none' }}>
         {list.map((item) =>
           <li className="dropdown-list-item"

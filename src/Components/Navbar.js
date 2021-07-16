@@ -12,7 +12,7 @@ export default function Navbar(props) {
 
   return (
     <div className="navbar">
-      <h1 className="navbar-brand">Path <br></br>Visualizer</h1>
+      <a href="/" className="navbar-brand">Path <br></br>Visualizer</a>
       <div className="navbar-content">
         <div className="content-1">
         </div>

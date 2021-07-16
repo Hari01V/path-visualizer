@@ -9,9 +9,11 @@
   align-items: center;
 }
 .navbar-brand{
+  color: white;
   font-size: 20px;
   font-weight: 400;
   letter-spacing: 1px;
+  text-decoration: none;
 }
 .navbar-content{
   max-width: 100%;

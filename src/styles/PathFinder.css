@@ -3,6 +3,23 @@
   display: flex;
   flex-direction: column;
 }
+.path-finder .algo-desc{
+  padding: 0 60px;
+  margin: 12px 140px;
+  text-align: center;
+  font-size: 18px;
+  font-family: monospace;
+  letter-spacing: 1px;
+  transition: transform 1s;
+}
+.path-finder .search-result{
+  padding: 4px 80px;
+  margin: 0 140px;
+  text-align: center;
+  font-size: 18px;
+  font-family: monospace;
+  letter-spacing: 1px;
+}
 
 .board{
   width: 100%;
