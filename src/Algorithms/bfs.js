@@ -1,4 +1,12 @@
-const visualize_BFS = (board, setVisualizing, speed) => {
+const visualize_BFS = (board, setVisualizing, speed, setResult) => {
+  let result = {
+    algorithm: "Breadth First Search",
+    visited_nodes: 0,
+    time_taken: 0,
+    path_cost: 0
+  }
+
+  const t0 = performance.now();
   let no_of_rows = board.length;
   let no_of_cols = board[0].length;
 
@@ -46,6 +54,7 @@ const visualize_BFS = (board, setVisualizing, speed) => {
       } else if (!isWall && !isVisited && !isStart) {
         neighbours.push(node);
         board[row][col].isVisited = true;
+        result.visited_nodes++;
         setTimeout(() => {
           document.querySelector(`#cell-${row}-${col} .cell`).classList.add("visited");
         }, wait_time_factor * time_count);
@@ -55,13 +64,18 @@ const visualize_BFS = (board, setVisualizing, speed) => {
     count++;
   }
 
+  const t1 = performance.now();
+  result.time_taken = (t1 - t0).toFixed(3);
+
   const path = backtrackPath(neighbours);
+  result.path_cost = path.length;
   for (let i = path.length - 1; i >= 0; i--) {
     let { row, col } = path[i];
     setTimeout(() => {
       document.querySelector(`#cell-${row}-${col} .cell`).classList.add("path");
       if (i == 0) {
         setVisualizing(false);
+        setResult(result);
       }
     }, wait_time_factor * time_count);
     time_count++;

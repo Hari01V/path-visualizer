@@ -16,9 +16,23 @@
   padding: 4px 80px;
   margin: 0 140px;
   text-align: center;
-  font-size: 18px;
+  font-size: 17px;
   font-family: monospace;
   letter-spacing: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.search-result .result-part{
+  background: #8bd8f8;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin: 2px 8px;
+}
+.search-result .result-part .result-part-value{
+  background: white;
+  padding: 2px 4px;
+  border-radius: 6px;
 }
 
 .board{

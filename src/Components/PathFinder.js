@@ -42,6 +42,7 @@ export default function PathFinder(props) {
   const [algorithm, setAlgorithm] = useState("");
   const [speed, setSpeed] = useState("fast");
   const [isVisualizing, setVisualizing] = useState(false);
+  const [result, setResult] = useState(null);
 
   const createBoard = () => {
     board = [];
@@ -104,7 +105,7 @@ export default function PathFinder(props) {
       const currAlgorithm = OPTIONS.algorithm.find(item => item.value === algorithm);
       if (currAlgorithm) {
         setVisualizing(true);
-        currAlgorithm.method(board, setVisualizing, speed);
+        currAlgorithm.method(board, setVisualizing, speed, setResult);
       } else {
         const element = document.querySelector(".algo-desc");
         element.style.transform = "scale(1.1)";
@@ -254,7 +255,17 @@ export default function PathFinder(props) {
         clearWalls={clearWalls}
         clearPath={clearPath} />
       <div className="algo-desc"></div>
-      <div className="search-result">{isVisualizing ? "IN PROCESS" : "ENDED"}</div>
+      <div className="search-result">
+        <div className="result-part">
+          <span className="result-part-value">{isVisualizing || !result ? "-" : result.visited_nodes}</span> VISITED NODES
+        </div>
+        <div className="result-part">
+          <span className="result-part-value">{isVisualizing || !result ? "-" : result.time_taken}</span> TIME TAKEN(in ms)
+        </div>
+        <div className="result-part">
+          <span className="result-part-value">{isVisualizing || !result ? "-" : result.path_cost}</span> PATH COST
+        </div>
+      </div>
       <div className="board">
         <table>
           <tbody className="board-table">

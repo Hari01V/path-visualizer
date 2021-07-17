@@ -26,11 +26,29 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-grow: 1;
 }
 .navbar-content .content-2{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.navbar-content .content-2 .navbar-btn{
+  color: white;
+  background: #002433;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+  font-family: monospace;
+  padding: 8px 16px;
+  margin: 4px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+.navbar-content .content-2 .navbar-btn:hover{
+  color: #002433;
+  background: #efefef;
 }
 .navbar .visualize-btn{
   color: #002433;
