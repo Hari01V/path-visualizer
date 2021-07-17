@@ -1,4 +1,4 @@
-const visualize_Dijkstra = (board) => {
+const visualize_Dijkstra = (board, setVisualizing, speed) => {
   let no_of_rows = board.length;
   let no_of_cols = board[0].length;
 
@@ -16,6 +16,9 @@ const visualize_Dijkstra = (board) => {
 
   const neighbours = find_neighbours(start_node, no_of_rows, no_of_cols, board);
   console.log(neighbours);
+
+  setVisualizing(false);
+
 }
 
 const find_neighbours = (node, rows, cols, board) => {

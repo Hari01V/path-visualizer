@@ -51,8 +51,8 @@ export default function PathFinder(props) {
         row.push({
           row: i,
           col: j,
-          isStart: i === start.row && j === start.col,
-          isEnd: i === end.row && j === end.col,
+          isStart: i === initial_start.row && j === initial_start.col,
+          isEnd: i === initial_end.row && j === initial_end.col,
           isVisited: false,
           isWall: false
         })
@@ -67,8 +67,8 @@ export default function PathFinder(props) {
         row.push({
           row: i,
           col: j,
-          isStart: i === start.row && j === start.col,
-          isEnd: i === end.row && j === end.col,
+          isStart: i === initial_start.row && j === initial_start.col,
+          isEnd: i === initial_end.row && j === initial_end.col,
           isVisited: false,
           isWall: false
         })
@@ -99,13 +99,7 @@ export default function PathFinder(props) {
 
   const visualize = () => {
     if (!isVisualizing) {
-      for (let i = 0; i < board.length; i++) {
-        for (let j = 0; j < board[0].length; j++) {
-          board[i][j].isVisited = false;
-          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
-          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
-        }
-      }
+      clearPath();
 
       const currAlgorithm = OPTIONS.algorithm.find(item => item.value === algorithm);
       if (currAlgorithm) {
@@ -206,9 +200,59 @@ export default function PathFinder(props) {
     }
   }
 
+  const clearWalls = () => {
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[0].length; j++) {
+        board[i][j].isWall = false;
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("wall");
+        board[i][j].isVisited = false;
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
+      }
+    }
+  }
+
+  const resetBoard = () => {
+    board = [];
+    for (let i = 0; i < row; i++) {
+      let row = [];
+      for (let j = 0; j < col; j++) {
+        row.push({
+          row: i,
+          col: j,
+          isStart: i === initial_start.row && j === initial_start.col,
+          isEnd: i === initial_end.row && j === initial_end.col,
+          isVisited: false,
+          isWall: false
+        });
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("wall");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
+      }
+      board.push(row);
+    }
+    setMatrix(board);
+  }
+
+  const clearPath = () => {
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[0].length; j++) {
+        board[i][j].isVisited = false;
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
+      }
+    }
+  }
+
   return (
     <div className="path-finder">
-      <Navbar visualize={visualize} setAlgorithm={setAlgorithm} setSpeed={setSpeed} OPTIONS={OPTIONS} />
+      <Navbar visualize={visualize}
+        setAlgorithm={setAlgorithm}
+        setSpeed={setSpeed}
+        OPTIONS={OPTIONS}
+        resetBoard={resetBoard}
+        clearWalls={clearWalls}
+        clearPath={clearPath} />
       <div className="algo-desc"></div>
       <div className="search-result">{isVisualizing ? "IN PROCESS" : "ENDED"}</div>
       <div className="board">

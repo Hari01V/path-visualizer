@@ -19,7 +19,11 @@
   max-width: 100%;
   padding: 8px 32px;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.navbar-content .content-1{
+  display: flex;
   justify-content: center;
   align-items: center;
 }
