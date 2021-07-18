@@ -1,6 +1,6 @@
 .dropdown{
   color: white;
-  margin: 0px 12px;
+  margin: 0px 8px;
   padding-bottom: 8px;
   cursor: pointer;
   position: relative;
@@ -12,7 +12,7 @@
   font-size: 17px;
   font-weight: 400;
   letter-spacing: 1px;
-  padding: 8px 24px 0 24px;
+  padding: 8px 20px 0 20px;
   text-transform: capitalize;
   display: flex;
   align-items: center;

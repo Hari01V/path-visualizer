@@ -6,7 +6,7 @@ import '../styles/PathFinder.css';
 
 import visualize_Dijkstra from '../Algorithms/dijkstra';
 import visualize_BFS from '../Algorithms/bfs';
-
+import recursiveDivision from '../Algorithms/recursiveDivision';
 
 
 let board = [];
@@ -20,6 +20,9 @@ let OPTIONS = {
     { name: "Fast", value: "fast" },
     { name: "Normal", value: "normal" },
     { name: "Slow", value: "slow" }
+  ],
+  "maze": [
+    { name: "Recursive Division", method: recursiveDivision }
   ]
 }
 
@@ -245,11 +248,16 @@ export default function PathFinder(props) {
     }
   }
 
+  const createMaze = (method) => {
+    method(board);
+  }
+
   return (
     <div className="path-finder">
       <Navbar visualize={visualize}
         setAlgorithm={setAlgorithm}
         setSpeed={setSpeed}
+        createMaze={createMaze}
         OPTIONS={OPTIONS}
         resetBoard={resetBoard}
         clearWalls={clearWalls}

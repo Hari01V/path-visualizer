@@ -5,10 +5,11 @@ import '../styles/Navbar.css';
 
 export default function Navbar(props) {
 
-  let { visualize, setAlgorithm, setSpeed, OPTIONS, resetBoard, clearWalls, clearPath } = props;
+  let { visualize, setAlgorithm, setSpeed, createMaze, OPTIONS, resetBoard, clearWalls, clearPath } = props;
 
   const algoList = OPTIONS["algorithm"];
   const speedList = OPTIONS["speed"];
+  const mazeList = OPTIONS["maze"];
 
   return (
     <div className="navbar">
@@ -16,6 +17,7 @@ export default function Navbar(props) {
       <div className="navbar-content">
         <div className="content-1">
           <Dropdown title={"Algorithm"} list={algoList} setAlgorithm={setAlgorithm} />
+          <Dropdown title={"Maze"} list={mazeList} createMaze={createMaze} />
           <Dropdown title={"Speed"} list={speedList} setSpeed={setSpeed} />
         </div>
         <div className="content-2">

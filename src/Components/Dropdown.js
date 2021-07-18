@@ -5,7 +5,7 @@ import '../styles/Dropdown.css';
 
 export default function Dropdown(props) {
 
-  let { title, list, setAlgorithm, setSpeed } = props;
+  let { title, list, setAlgorithm, setSpeed, createMaze } = props;
   const [isOpen, setOpen] = useState(false);
   const [currentOption, setCurrentOption] = useState("");
 
@@ -29,13 +29,16 @@ export default function Dropdown(props) {
     }
   }, []);
 
-  const handleSelect = (value) => {
+  const handleSelect = (value, method) => {
     if (title === "Algorithm") {
       setAlgorithm(value);
+      setCurrentOption(value);
     } else if (title === "Speed") {
       setSpeed(value);
+      setCurrentOption(value);
+    } else if (title === "Maze") {
+      createMaze(method);
     }
-    setCurrentOption(value);
   }
 
   return (
@@ -44,14 +47,14 @@ export default function Dropdown(props) {
       style={isOpen ? { background: '#002433' } : {}}
       aria-controls="simple-menu" aria-haspopup="true">
       <div className="dropdown-title">{title === "Speed" ? `Speed: ${currentOption}` : title} <ArrowDropDownIcon /></div>
-      {title !== "Speed" ?
+      {title === "Algorithm" ?
         <span className="selected-option">{currentOption}</span>
         : ""}
       <ul className="dropdown-list" style={isOpen ? { display: 'block' } : { display: 'none' }}>
         {list.map((item) =>
           <li className="dropdown-list-item"
             key={`dropdown-list-item-${item.value}`}
-            onClick={() => handleSelect(item.value)}>{item.name}</li>
+            onClick={() => handleSelect(item.value, item.method)}>{item.name}</li>
         )}
       </ul>
     </div>
