@@ -249,7 +249,9 @@ export default function PathFinder(props) {
   }
 
   const createMaze = (method) => {
-    method(board);
+    if (!isVisualizing) {
+      method(board, speed);
+    }
   }
 
   return (

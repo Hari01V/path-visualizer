@@ -29,7 +29,7 @@ const visualize_BFS = (board, setVisualizing, speed, setResult) => {
   let time_count = 1;
   let wait_time_factor = 20;
   if (speed === "fast") {
-    wait_time_factor = 10;
+    wait_time_factor = 30;
   } else if (speed === "normal") {
     wait_time_factor = 60;
   } else if (speed === "slow") {
