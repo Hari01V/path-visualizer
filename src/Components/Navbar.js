@@ -1,11 +1,12 @@
 import React from 'react';
 import Dropdown from '../Components/Dropdown';
+import BlockIcon from '@material-ui/icons/Block';
 
 import '../styles/Navbar.css';
 
 export default function Navbar(props) {
 
-  let { visualize, setAlgorithm, setSpeed, createMaze, OPTIONS, resetBoard, clearWalls, clearPath } = props;
+  let { visualize, setAlgorithm, setSpeed, createMaze, OPTIONS, resetBoard, clearWalls, clearPath, addCheckPoint, toggleAddCheckPoint } = props;
 
   const algoList = OPTIONS["algorithm"];
   const speedList = OPTIONS["speed"];
@@ -21,12 +22,18 @@ export default function Navbar(props) {
           <Dropdown title={"Speed"} list={speedList} setSpeed={setSpeed} />
         </div>
         <div className="content-2">
-          <button className="navbar-btn"
-            onClick={resetBoard}>Reset Board</button>
-          <button className="navbar-btn"
-            onClick={clearWalls}>Clear Walls</button>
-          <button className="navbar-btn"
-            onClick={clearPath}>Clear Path</button>
+          <div className="content-2-1">
+            <button className="navbar-btn"
+              onClick={resetBoard}>Reset Board</button>
+            <button className="navbar-btn"
+              onClick={clearWalls}>Clear Walls</button>
+            <button className="navbar-btn"
+              onClick={clearPath}>Clear Path</button>
+          </div>
+          <div className="content-2-2">
+            <button className="navbar-btn"
+              onClick={toggleAddCheckPoint}>{addCheckPoint ? <BlockIcon /> : ""}Add Checkpoint</button>
+          </div>
         </div>
       </div>
       <button onClick={visualize}

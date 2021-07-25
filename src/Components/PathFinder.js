@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Cell from './Cell';
 import Navbar from './Navbar';
+import useToggle from '../hooks/useToggle';
 
 import '../styles/PathFinder.css';
 
@@ -46,6 +47,8 @@ export default function PathFinder(props) {
   const [speed, setSpeed] = useState("fast");
   const [isVisualizing, setVisualizing] = useState(false);
   const [result, setResult] = useState(null);
+  const [addCheckPoint, toggleAddCheckPoint] = useToggle(false);
+  const [isCheckPointRelocating, setCheckPointRelocation] = useState(false);
 
   const createBoard = () => {
     board = [];
@@ -58,7 +61,8 @@ export default function PathFinder(props) {
           isStart: i === initial_start.row && j === initial_start.col,
           isEnd: i === initial_end.row && j === initial_end.col,
           isVisited: false,
-          isWall: false
+          isWall: false,
+          isCheckPoint: false
         })
       }
       board.push(row);
@@ -74,7 +78,8 @@ export default function PathFinder(props) {
           isStart: i === initial_start.row && j === initial_start.col,
           isEnd: i === initial_end.row && j === initial_end.col,
           isVisited: false,
-          isWall: false
+          isWall: false,
+          isCheckPoint: false
         })
       }
       initial_board.push(row);
@@ -93,6 +98,7 @@ export default function PathFinder(props) {
       setMouseDown(false);
       setStartRelocation(false);
       setEndRelocation(false);
+      setCheckPointRelocation(false);
     });
     createBoard();
   }, [])
@@ -123,43 +129,57 @@ export default function PathFinder(props) {
 
   const handleClick = (event, row, col) => {
     let cell = board[row][col];
-    let { isStart, isEnd, isVisited, isWall } = cell;
-    if (!isVisualizing && !isStart && !isEnd) {
-      event.target.classList.remove("visited");
-      event.target.classList.remove("path");
-      board[row][col].isVisited = false;
-      event.target.classList.toggle("wall");
-      board[row][col].isWall = !(board[row][col].isWall);
+    let { isStart, isEnd, isVisited, isWall, isCheckPoint } = cell;
+    if (!isVisualizing && !isStart && !isEnd && !isCheckPoint) {
+      if (addCheckPoint) {
+        event.target.classList.remove("visited");
+        event.target.classList.remove("path");
+        event.target.classList.add("checkpoint");
+        board[row][col].isVisited = false;
+        board[row][col].isCheckPoint = true;
+        setMatrix(board);
+        toggleAddCheckPoint();
+      } else {
+        event.target.classList.remove("visited");
+        event.target.classList.remove("path");
+        board[row][col].isVisited = false;
+        event.target.classList.toggle("wall");
+        board[row][col].isWall = !(board[row][col].isWall);
+      }
     }
   }
 
   const handleMouseEnter = (event, row, col) => {
     let cell = board[row][col];
-    let { isStart, isEnd, isVisited, isWall } = cell;
+    let { isStart, isEnd, isVisited, isWall, isCheckPoint } = cell;
     if (!isVisualizing && isMouseDown) {
-      if (!isStart && !isEnd && !isStartRelocating && !isEndRelocating) {
+      if (!isStart && !isEnd && !isStartRelocating && !isEndRelocating && !isCheckPointRelocating) {
         event.target.classList.remove("path");
         event.target.classList.remove("visited");
         board[row][col].isVisited = false;
         event.target.classList.toggle("wall");
         board[row][col].isWall = !(board[row][col].isWall);
-      } else if (isStartRelocating && !isEnd) {
+      } else if (isStartRelocating && !isEnd && !isCheckPoint) {
         board[start.row][start.col].isStart = false;
         setStart({ row: row, col: col });
         board[row][col].isStart = true;
         // board[row][col].isWall = false;
-      } else if (isEndRelocating && !isStart) {
+      } else if (isEndRelocating && !isStart && !isCheckPoint) {
         board[end.row][end.col].isEnd = false;
         setEnd({ row: row, col: col });
         board[row][col].isEnd = true;
         // board[row][col].isWall = false;
+      } else if (isCheckPointRelocating && !isStart && !isEnd) {
+        board[row][col].isCheckPoint = true;
+        event.target.classList.add("checkpoint");
+        setMatrix(board);
       }
     }
   }
 
   const handleMouseDown = (event, row, col) => {
     let cell = board[row][col];
-    let { isStart, isEnd, isVisited, isWall } = cell;
+    let { isStart, isEnd, isVisited, isWall, isCheckPoint } = cell;
     if (!isVisualizing) {
       if (isStart) {
         setStartRelocation(true);
@@ -171,22 +191,29 @@ export default function PathFinder(props) {
         board[row][col].isEnd = false;
         // setMatrix([...matrix, [...matrix[row], { ...matrix[row][col], isEnd: false }]]);
         setMatrix(board);
+      } else if (isCheckPoint) {
+        setCheckPointRelocation(true);
       }
     }
   }
 
   const handleMouseLeave = (event, row, col) => {
     let cell = board[row][col];
-    let { isStart, isEnd, isVisited, isWall } = cell;
-
+    let { isStart, isEnd, isVisited, isWall, isCheckPoint } = cell;
+    if (!isVisualizing) {
+      if (isCheckPointRelocating) {
+        board[row][col].isCheckPoint = false;
+        event.target.classList.remove("checkpoint");
+      }
+    }
   }
 
   const handleMouseUp = (event, row, col) => {
     let cell = board[row][col];
-    let { isStart, isEnd, isVisited, isWall } = cell;
+    let { isStart, isEnd, isVisited, isWall, isCheckPoint } = cell;
     if (!isVisualizing) {
       if (isStartRelocating) {
-        if (!isEnd) {
+        if (!isEnd && !isCheckPoint) {
           setStart({ row: row, col: col });
           board[row][col].isStart = true;
           // board[row][col].isWall = false;
@@ -194,12 +221,18 @@ export default function PathFinder(props) {
         setStartRelocation(false);
       }
       if (isEndRelocating) {
-        if (!isStart) {
+        if (!isStart && !isCheckPoint) {
           setEnd({ row: row, col: col });
           board[row][col].isEnd = true;
           // board[row][col].isWall = false;
         }
         setEndRelocation(false);
+      }
+      if (isCheckPointRelocating) {
+        if (!isStart && !isEnd) {
+          // board[row][col].isCheckPoint = true;
+        }
+        setCheckPointRelocation(false);
       }
     }
   }
@@ -227,11 +260,13 @@ export default function PathFinder(props) {
           isStart: i === initial_start.row && j === initial_start.col,
           isEnd: i === initial_end.row && j === initial_end.col,
           isVisited: false,
-          isWall: false
+          isWall: false,
+          isCheckPoint: false
         });
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("wall");
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("checkpoint");
       }
       board.push(row);
     }
@@ -263,7 +298,9 @@ export default function PathFinder(props) {
         OPTIONS={OPTIONS}
         resetBoard={resetBoard}
         clearWalls={clearWalls}
-        clearPath={clearPath} />
+        clearPath={clearPath}
+        addCheckPoint={addCheckPoint}
+        toggleAddCheckPoint={toggleAddCheckPoint} />
       <div className="algo-desc"></div>
       <div className="search-result">
         <div className="result-part">

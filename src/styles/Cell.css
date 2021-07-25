@@ -17,6 +17,25 @@
 .cell.end{
   color: red;
 }
+.cell.checkpoint{
+  color: orange;
+  position: relative;
+  background: white !important;
+}
+.cell.checkpoint::after{
+  content: '';
+  width: 90%;
+  height: 90%;
+  background-image: url('../images/checkpointIcon.JPG');
+  /* background-image: url('../../node_modules/@material-ui/icons/Room.js'); */
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
 .cell.wall{
   background: #0c3547;
   transform: scale(1.1);
