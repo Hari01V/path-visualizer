@@ -147,12 +147,12 @@ export default function PathFinder(props) {
         board[start.row][start.col].isStart = false;
         setStart({ row: row, col: col });
         board[row][col].isStart = true;
-        board[row][col].isWall = false;
+        // board[row][col].isWall = false;
       } else if (isEndRelocating && !isStart) {
         board[end.row][end.col].isEnd = false;
         setEnd({ row: row, col: col });
         board[row][col].isEnd = true;
-        board[row][col].isWall = false;
+        // board[row][col].isWall = false;
       }
     }
   }
@@ -189,7 +189,7 @@ export default function PathFinder(props) {
         if (!isEnd) {
           setStart({ row: row, col: col });
           board[row][col].isStart = true;
-          board[row][col].isWall = false;
+          // board[row][col].isWall = false;
         }
         setStartRelocation(false);
       }
@@ -197,7 +197,7 @@ export default function PathFinder(props) {
         if (!isStart) {
           setEnd({ row: row, col: col });
           board[row][col].isEnd = true;
-          board[row][col].isWall = false;
+          // board[row][col].isWall = false;
         }
         setEndRelocation(false);
       }
