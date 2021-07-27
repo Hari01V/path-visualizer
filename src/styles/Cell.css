@@ -44,12 +44,12 @@
 .cell.visited{
   animation: visited 1.4s 0s;
   background: rgb(70, 181, 255);
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 .cell.visited_to_checkpoint{
   animation: visited_to_checkpoint 1.4s 0s;
   background: rgb(197, 114, 255);
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 .cell.path{
   background: rgb(255, 255, 91);
