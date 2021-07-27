@@ -6,7 +6,7 @@ import '../styles/Navbar.css';
 
 export default function Navbar(props) {
 
-  let { visualize, setAlgorithm, setSpeed, createMaze, OPTIONS, resetBoard, clearWalls, clearPath, addCheckPoint, toggleAddCheckPoint } = props;
+  let { visualize, setAlgorithm, setSpeed, createMaze, OPTIONS, resetBoard, clearWalls, clearPath, AddCheckPoint, ischeckPointAdded } = props;
 
   const algoList = OPTIONS["algorithm"];
   const speedList = OPTIONS["speed"];
@@ -32,7 +32,7 @@ export default function Navbar(props) {
           </div>
           <div className="content-2-2">
             <button className="navbar-btn"
-              onClick={toggleAddCheckPoint}>{addCheckPoint ? <BlockIcon /> : ""}Add Checkpoint</button>
+              onClick={AddCheckPoint}>{ischeckPointAdded ? "Remove" : "Add"} Checkpoint</button>
           </div>
         </div>
       </div>

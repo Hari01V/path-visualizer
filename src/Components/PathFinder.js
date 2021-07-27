@@ -47,8 +47,8 @@ export default function PathFinder(props) {
   const [speed, setSpeed] = useState("fast");
   const [isVisualizing, setVisualizing] = useState(false);
   const [result, setResult] = useState(null);
-  const [addCheckPoint, toggleAddCheckPoint] = useToggle(false);
   const [isCheckPointRelocating, setCheckPointRelocation] = useState(false);
+  const [ischeckPointAdded, setCheckPointAdded] = useState(false);
 
   const createBoard = () => {
     board = [];
@@ -131,21 +131,12 @@ export default function PathFinder(props) {
     let cell = board[row][col];
     let { isStart, isEnd, isVisited, isWall, isCheckPoint } = cell;
     if (!isVisualizing && !isStart && !isEnd && !isCheckPoint) {
-      if (addCheckPoint) {
-        event.target.classList.remove("visited");
-        event.target.classList.remove("path");
-        event.target.classList.add("checkpoint");
-        board[row][col].isVisited = false;
-        board[row][col].isCheckPoint = true;
-        setMatrix(board);
-        toggleAddCheckPoint();
-      } else {
-        event.target.classList.remove("visited");
-        event.target.classList.remove("path");
-        board[row][col].isVisited = false;
-        event.target.classList.toggle("wall");
-        board[row][col].isWall = !(board[row][col].isWall);
-      }
+      event.target.classList.remove("visited");
+      event.target.classList.remove("visited_to_checkpoint");
+      event.target.classList.remove("path");
+      board[row][col].isVisited = false;
+      event.target.classList.toggle("wall");
+      board[row][col].isWall = !(board[row][col].isWall);
     }
   }
 
@@ -156,6 +147,7 @@ export default function PathFinder(props) {
       if (!isStart && !isEnd && !isStartRelocating && !isEndRelocating && !isCheckPointRelocating) {
         event.target.classList.remove("path");
         event.target.classList.remove("visited");
+        event.target.classList.remove("visited_to_checkpoint");
         board[row][col].isVisited = false;
         event.target.classList.toggle("wall");
         board[row][col].isWall = !(board[row][col].isWall);
@@ -244,6 +236,7 @@ export default function PathFinder(props) {
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("wall");
         board[i][j].isVisited = false;
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited_to_checkpoint");
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
       }
     }
@@ -265,6 +258,7 @@ export default function PathFinder(props) {
         });
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("wall");
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited_to_checkpoint");
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("checkpoint");
       }
@@ -278,8 +272,44 @@ export default function PathFinder(props) {
       for (let j = 0; j < board[0].length; j++) {
         board[i][j].isVisited = false;
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited_to_checkpoint");
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
       }
+    }
+  }
+
+  const AddCheckPoint = () => {
+    if (ischeckPointAdded) {
+      for (let i = 0; i < row; i++) {
+        for (let j = 0; j < col; j++) {
+          if (board[i][j].isCheckPoint) {
+            board[i][j].isCheckPoint = false;
+            document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("checkpoint");
+          }
+        }
+      }
+      setCheckPointAdded(false);
+    } else {
+      let row = 8;
+      let col = 20;
+      if (!board[8][20].isStart && !board[8][20].isEnd) {
+        row = 8;
+        col = 20;
+      } else if (!board[8][21].isStart && !board[8][21].isEnd) {
+        row = 8;
+        col = 21;
+      } else if (!board[8][19].isStart && !board[8][19].isEnd) {
+        row = 8;
+        col = 19;
+      }
+      board[row][col].isVisited = false;
+      board[row][col].isCheckPoint = true;
+      document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("visited");
+      document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("visited_to_checkpoint");
+      document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("path");
+      document.querySelector(`#cell-${row}-${col} .cell`).classList.add("checkpoint");
+      setMatrix(board);
+      setCheckPointAdded(true);
     }
   }
 
@@ -299,8 +329,8 @@ export default function PathFinder(props) {
         resetBoard={resetBoard}
         clearWalls={clearWalls}
         clearPath={clearPath}
-        addCheckPoint={addCheckPoint}
-        toggleAddCheckPoint={toggleAddCheckPoint} />
+        AddCheckPoint={AddCheckPoint}
+        ischeckPointAdded={ischeckPointAdded} />
       <div className="algo-desc"></div>
       <div className="search-result">
         <div className="result-part">
