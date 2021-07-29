@@ -46,30 +46,36 @@ const visualize_BFS = (board, setVisualizing, speed, setResult) => {
     result.time_taken = (t1 - t0).toFixed(3);
 
     final_time_count = time_count;
-    final_path = backtrackPath(neighbours);
+    final_path = backtrackPath(neighbours, "end");
+
+    result.path_cost = final_path.length;
   } else {
     const till_checkpoint = bfs_algorithm(start_node, wait_time_factor, "checkpoint", board, no_of_rows, no_of_cols, 1);
 
     const till_end = bfs_algorithm(board[CHECKPOINT.row][CHECKPOINT.col], wait_time_factor, "end_node", board, no_of_rows, no_of_cols, till_checkpoint.time_count);
+
+    result.visited_nodes = till_checkpoint.count_visited_nodes + till_end.count_visited_nodes;
 
     const t1 = performance.now();
     result.time_taken = (t1 - t0).toFixed(3);
 
     final_time_count = till_end.time_count;
 
-    let path_to_checkpoint = backtrackPath(till_checkpoint.neighbours);
-    let path_to_end = backtrackPath(till_end.neighbours);
+    let path_to_checkpoint = backtrackPath(till_checkpoint.neighbours, "checkpoint");
+    console.log(path_to_checkpoint);
+    let path_to_end = backtrackPath(till_end.neighbours, "end");
+    console.log(path_to_end);
     final_path = path_to_end;
     for (const path_node of path_to_checkpoint) {
       final_path.push(path_node);
     }
-  }
 
+    result.path_cost = final_path.length - 1;
+  }
 
 
   //PATH
   // const path = backtrackPath(neighbours);
-  result.path_cost = final_path.length;
   for (let i = final_path.length - 1; i >= 0; i--) {
     let { row, col } = final_path[i];
     setTimeout(() => {
@@ -95,7 +101,7 @@ const bfs_algorithm = (from_node, wait_time_factor, condition, board, no_of_rows
   while (!isGoalReached && count < neighbours.length) {
     let neighbour_nodes = find_neighbours(neighbours[count], no_of_rows, no_of_cols, board);
     for (let node of neighbour_nodes) {
-      let { row, col, isWall, isVisited, isStart, isEnd, isCheckPoint } = node;
+      let { row, col, isWall, isVisited, isStart, isEnd, isCheckPoint, isCheckpoint_visited } = node;
       if (!isStart) {
         node = {
           ...node, parent: {
@@ -104,22 +110,34 @@ const bfs_algorithm = (from_node, wait_time_factor, condition, board, no_of_rows
           }
         };
       }
-      if (condition === "end_node" && isEnd) {
-        neighbours.push(node);
-        isGoalReached = true;
-        break;
-      } else if (condition === "checkpoint" && isCheckPoint) {
-        neighbours.push(node);
-        isGoalReached = true;
-        break;
-      } else if (!isWall && !isVisited && !isStart) {
-        neighbours.push(node);
-        board[row][col].isVisited = true;
-        count_visited_nodes++;
-        setTimeout(() => {
-          document.querySelector(`#cell-${row}-${col} .cell`).classList.add(visited_layer_css);
-        }, wait_time_factor * time_count);
-        time_count++;
+      if (condition === "end_node") {
+        if (isEnd) {
+          neighbours.push(node);
+          isGoalReached = true;
+          break;
+        } else if (!isWall && !isVisited && !isStart && !isCheckPoint) {
+          neighbours.push(node);
+          board[row][col].isVisited = true;
+          count_visited_nodes++;
+          setTimeout(() => {
+            document.querySelector(`#cell-${row}-${col} .cell`).classList.add(visited_layer_css);
+          }, wait_time_factor * time_count);
+          time_count++;
+        }
+      } else if (condition === "checkpoint") {
+        if (isCheckPoint) {
+          neighbours.push(node);
+          isGoalReached = true;
+          break;
+        } else if (!isWall && !isCheckpoint_visited && !isStart) {
+          neighbours.push(node);
+          board[row][col].isCheckpoint_visited = true;
+          count_visited_nodes++;
+          setTimeout(() => {
+            document.querySelector(`#cell-${row}-${col} .cell`).classList.add(visited_layer_css);
+          }, wait_time_factor * time_count);
+          time_count++;
+        }
       }
     }
     count++;
@@ -127,20 +145,35 @@ const bfs_algorithm = (from_node, wait_time_factor, condition, board, no_of_rows
   return { neighbours: neighbours, count_visited_nodes: count_visited_nodes, time_count: time_count };
 }
 
-const backtrackPath = (neighbours) => {
+const backtrackPath = (neighbours, to) => {
   let path = [];
   let neighbours_size = neighbours.length;
   let count = neighbours_size - 1;
-  if (neighbours[neighbours_size - 1].isEnd) {
-    let node = neighbours[count];
-    while (!(node.isStart) && count > 0) {
-      path.push(node);
-      let { row, col } = node.parent;
-      //find parent
-      while (count > 0 && (neighbours[count].row !== row || neighbours[count].col !== col)) {
-        count--;
+  if (to === "checkpoint") {
+    if (neighbours[neighbours_size - 1].isCheckPoint) {
+      let node = neighbours[count];
+      while (!(node.isStart) && count > 0) {
+        path.push(node);
+        let { row, col } = node.parent;
+        //find parent
+        while (count > 0 && (neighbours[count].row !== row || neighbours[count].col !== col)) {
+          count--;
+        }
+        node = neighbours[count];
       }
-      node = neighbours[count];
+    }
+  } else if (to === "end") {
+    if (neighbours[neighbours_size - 1].isEnd) {
+      let node = neighbours[count];
+      while (!(node.isStart) && count > 0) {
+        path.push(node);
+        let { row, col } = node.parent;
+        //find parent
+        while (count > 0 && (neighbours[count].row !== row || neighbours[count].col !== col)) {
+          count--;
+        }
+        node = neighbours[count];
+      }
     }
   }
   path.push(neighbours[0]);

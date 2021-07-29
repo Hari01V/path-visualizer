@@ -61,6 +61,7 @@ export default function PathFinder(props) {
           isStart: i === initial_start.row && j === initial_start.col,
           isEnd: i === initial_end.row && j === initial_end.col,
           isVisited: false,
+          isCheckpoint_visited: false,
           isWall: false,
           isCheckPoint: false
         })
@@ -78,6 +79,7 @@ export default function PathFinder(props) {
           isStart: i === initial_start.row && j === initial_start.col,
           isEnd: i === initial_end.row && j === initial_end.col,
           isVisited: false,
+          isCheckpoint_visited: false,
           isWall: false,
           isCheckPoint: false
         })
@@ -129,12 +131,13 @@ export default function PathFinder(props) {
 
   const handleClick = (event, row, col) => {
     let cell = board[row][col];
-    let { isStart, isEnd, isVisited, isWall, isCheckPoint } = cell;
+    let { isStart, isEnd, isVisited, isCheckpoint_visited, isWall, isCheckPoint } = cell;
     if (!isVisualizing && !isStart && !isEnd && !isCheckPoint) {
       event.target.classList.remove("visited");
       event.target.classList.remove("visited_to_checkpoint");
       event.target.classList.remove("path");
       board[row][col].isVisited = false;
+      board[row][col].isCheckpoint_visited = false;
       event.target.classList.toggle("wall");
       board[row][col].isWall = !(board[row][col].isWall);
     }
@@ -142,13 +145,14 @@ export default function PathFinder(props) {
 
   const handleMouseEnter = (event, row, col) => {
     let cell = board[row][col];
-    let { isStart, isEnd, isVisited, isWall, isCheckPoint } = cell;
+    let { isStart, isEnd, isVisited, isCheckpoint_visited, isWall, isCheckPoint } = cell;
     if (!isVisualizing && isMouseDown) {
       if (!isStart && !isEnd && !isStartRelocating && !isEndRelocating && !isCheckPointRelocating) {
         event.target.classList.remove("path");
         event.target.classList.remove("visited");
         event.target.classList.remove("visited_to_checkpoint");
         board[row][col].isVisited = false;
+        board[row][col].isCheckpoint_visited = false;
         event.target.classList.toggle("wall");
         board[row][col].isWall = !(board[row][col].isWall);
       } else if (isStartRelocating && !isEnd && !isCheckPoint) {
@@ -171,7 +175,7 @@ export default function PathFinder(props) {
 
   const handleMouseDown = (event, row, col) => {
     let cell = board[row][col];
-    let { isStart, isEnd, isVisited, isWall, isCheckPoint } = cell;
+    let { isStart, isEnd, isVisited, isCheckpoint_visited, isWall, isCheckPoint } = cell;
     if (!isVisualizing) {
       if (isStart) {
         setStartRelocation(true);
@@ -191,7 +195,7 @@ export default function PathFinder(props) {
 
   const handleMouseLeave = (event, row, col) => {
     let cell = board[row][col];
-    let { isStart, isEnd, isVisited, isWall, isCheckPoint } = cell;
+    let { isStart, isEnd, isVisited, isCheckpoint_visited, isWall, isCheckPoint } = cell;
     if (!isVisualizing) {
       if (isCheckPointRelocating) {
         board[row][col].isCheckPoint = false;
@@ -202,7 +206,7 @@ export default function PathFinder(props) {
 
   const handleMouseUp = (event, row, col) => {
     let cell = board[row][col];
-    let { isStart, isEnd, isVisited, isWall, isCheckPoint } = cell;
+    let { isStart, isEnd, isVisited, isCheckpoint_visited, isWall, isCheckPoint } = cell;
     if (!isVisualizing) {
       if (isStartRelocating) {
         if (!isEnd && !isCheckPoint) {
@@ -235,6 +239,7 @@ export default function PathFinder(props) {
         board[i][j].isWall = false;
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("wall");
         board[i][j].isVisited = false;
+        board[i][j].isCheckpoint_visited = false;
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited_to_checkpoint");
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
@@ -253,6 +258,7 @@ export default function PathFinder(props) {
           isStart: i === initial_start.row && j === initial_start.col,
           isEnd: i === initial_end.row && j === initial_end.col,
           isVisited: false,
+          isCheckpoint_visited: false,
           isWall: false,
           isCheckPoint: false
         });
@@ -271,6 +277,7 @@ export default function PathFinder(props) {
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[0].length; j++) {
         board[i][j].isVisited = false;
+        board[i][j].isCheckpoint_visited = false;
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited_to_checkpoint");
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
@@ -303,6 +310,7 @@ export default function PathFinder(props) {
         col = 19;
       }
       board[row][col].isVisited = false;
+      board[row][col].isCheckpoint_visited = false;
       board[row][col].isCheckPoint = true;
       document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("visited");
       document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("visited_to_checkpoint");

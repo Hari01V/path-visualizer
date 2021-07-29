@@ -25,7 +25,9 @@ const recursiveDivision = (board, speed) => {
       board[i][j].isWall = false;
       document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("wall");
       board[i][j].isVisited = false;
+      board[i][j].isCheckpoint_visited = false;
       document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
+      document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited_to_checkpoint");
       document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
     }
   }

@@ -8,7 +8,7 @@ import '../styles/Cell.css';
 export default function Cell(props) {
 
   let { onClick, onMouseEnter, onMouseDown, onMouseUp, onMouseLeave } = props;
-  let { row, col, isStart, isEnd, isWall, isVisited, isCheckPoint } = props.cell;
+  let { row, col, isStart, isEnd, isWall, isVisited, isCheckpoint_visited, isCheckPoint } = props.cell;
 
   let class_name = `cell ${isStart ? "start" : ""} ${isEnd ? "end" : ""} ${isCheckPoint ? "checkpoint" : ""} ${!isStart && !isEnd && !isCheckPoint ? (isWall ? "wall" : "") : ""}`;
 
