@@ -7,7 +7,7 @@ import '../styles/PathFinder.css';
 
 import visualize_Dijkstra from '../Algorithms/dijkstra';
 import visualize_BFS from '../Algorithms/bfs';
-import recursiveDivision from '../Algorithms/recursiveDivision';
+import recursiveDivision from '../MazeAlgorithms/recursiveDivision';
 
 
 let board = [];
