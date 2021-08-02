@@ -141,6 +141,10 @@ export default function PathFinder(props) {
       const currAlgorithm = OPTIONS.algorithm.find(item => item.value === algorithm);
       if (currAlgorithm) {
         setVisualizing(true);
+        // if (!currAlgorithm.isWeighted) {
+        //   //WEIGHTS WILL BE REMOVED SINCE THIS IS UNWEIGHTED ALGORITHM
+        //   clearWeights();
+        // }
         currAlgorithm.method(board, setVisualizing, speed, setResult);
       } else {
         const element = document.querySelector(".algo-desc");
@@ -200,11 +204,6 @@ export default function PathFinder(props) {
       if (isWeightAllowed) {
         board[row][col].isWall = false;
         event.target.classList.remove("wall");
-        // if (board[row][col].weight === weight) {
-        //   board[row][col].weight = 0;
-        // } else {
-        //   board[row][col].weight = weight;
-        // }
         board[row][col].weight = board[row][col].weight === weight ? 0 : weight;
         addWeightClass(event);
       } else {
@@ -231,8 +230,22 @@ export default function PathFinder(props) {
         event.target.classList.remove("visited_to_checkpoint");
         board[row][col].isVisited = false;
         board[row][col].isCheckpoint_visited = false;
-        event.target.classList.toggle("wall");
-        board[row][col].isWall = !(board[row][col].isWall);
+        if (isWeightAllowed) {
+          board[row][col].isWall = false;
+          event.target.classList.remove("wall");
+          board[row][col].weight = board[row][col].weight === weight ? 0 : weight;
+          addWeightClass(event);
+        } else {
+          event.target.classList.remove("weight-vl");
+          event.target.classList.remove("weight-l");
+          event.target.classList.remove("weight-m");
+          event.target.classList.remove("weight-h");
+          event.target.classList.remove("weight-vh");
+          board[row][col].weight = 0;
+
+          event.target.classList.toggle("wall");
+          board[row][col].isWall = !(board[row][col].isWall);
+        }
       } else if (isStartRelocating && !isEnd && !isCheckPoint) {
         board[start.row][start.col].isStart = false;
         setStart({ row: row, col: col });
@@ -330,6 +343,12 @@ export default function PathFinder(props) {
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[0].length; j++) {
         board[i][j].weight = 0;
+        const cell = document.querySelector(`#cell-${i}-${j} .cell`);
+        cell.classList.remove("weight-vl");
+        cell.classList.remove("weight-l");
+        cell.classList.remove("weight-m");
+        cell.classList.remove("weight-h");
+        cell.classList.remove("weight-vh");
       }
     }
   }
