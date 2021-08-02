@@ -1,16 +1,16 @@
 import React from 'react';
 import Dropdown from '../Components/Dropdown';
-import BlockIcon from '@material-ui/icons/Block';
 
 import '../styles/Navbar.css';
 
 export default function Navbar(props) {
 
-  let { visualize, setAlgorithm, setSpeed, createMaze, OPTIONS, resetBoard, clearWalls, clearPath, AddCheckPoint, ischeckPointAdded } = props;
+  let { visualize, setAlgorithm, setSpeed, setWeight, createMaze, OPTIONS, resetBoard, clearWalls, clearPath, AddCheckPoint, ischeckPointAdded } = props;
 
   const algoList = OPTIONS["algorithm"];
   const speedList = OPTIONS["speed"];
   const mazeList = OPTIONS["maze"];
+  const weightList = OPTIONS["weight"];
 
   return (
     <div className="navbar">
@@ -33,6 +33,7 @@ export default function Navbar(props) {
           <div className="content-2-2">
             <button className="navbar-btn"
               onClick={AddCheckPoint}>{ischeckPointAdded ? "Remove" : "Add"} Checkpoint</button>
+            <Dropdown title={"Weight"} list={weightList} setWeight={setWeight} />
           </div>
         </div>
       </div>

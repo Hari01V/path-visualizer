@@ -9,13 +9,14 @@ import visualize_Dijkstra from '../Algorithms/dijkstra';
 import visualize_BFS from '../Algorithms/bfs';
 import recursiveDivision from '../MazeAlgorithms/recursiveDivision';
 
+// import LockIcon from '@material-ui/icons/Lock';
 
 let board = [];
 
 let OPTIONS = {
   "algorithm": [
-    { name: "Breadth First Search", value: "bfs", method: visualize_BFS },
-    { name: "Dijkstra's Algorithm", value: "dijkstra", method: visualize_Dijkstra }
+    { name: "Breadth First Search", value: "bfs", method: visualize_BFS, isWeighted: false },
+    { name: "Dijkstra's Algorithm", value: "dijkstra", method: visualize_Dijkstra, isWeighted: true }
   ],
   "speed": [
     { name: "Fast", value: "fast" },
@@ -24,6 +25,13 @@ let OPTIONS = {
   ],
   "maze": [
     { name: "Recursive Division", method: recursiveDivision }
+  ],
+  "weight": [
+    { name: "very less : 5", value: 5 },
+    { name: "less : 10", value: 10 },
+    { name: "moderate : 20", value: 20 },
+    { name: "high : 30", value: 30 },
+    { name: "very high : 50", value: 50 }
   ]
 }
 
@@ -32,6 +40,8 @@ let ALGO_DESC = {
   "bfs": "Breath-first Search is <strong>unweighted</strong> and <strong>guarantees</strong> the shortest path!",
   "dijkstra": "Dijkstra's Algorithm is <strong>weighted</strong> and <strong>guarantees</strong> the shortest path!"
 }
+
+let isWeightAllowed = false;
 
 export default function PathFinder(props) {
 
@@ -45,6 +55,7 @@ export default function PathFinder(props) {
   const [isEndRelocating, setEndRelocation] = useState(false);
   const [algorithm, setAlgorithm] = useState("");
   const [speed, setSpeed] = useState("fast");
+  const [weight, setWeight] = useState(5);
   const [isVisualizing, setVisualizing] = useState(false);
   const [result, setResult] = useState(null);
   const [isCheckPointRelocating, setCheckPointRelocation] = useState(false);
@@ -63,7 +74,8 @@ export default function PathFinder(props) {
           isVisited: false,
           isCheckpoint_visited: false,
           isWall: false,
-          isCheckPoint: false
+          isCheckPoint: false,
+          weight: 0
         })
       }
       board.push(row);
@@ -81,7 +93,8 @@ export default function PathFinder(props) {
           isVisited: false,
           isCheckpoint_visited: false,
           isWall: false,
-          isCheckPoint: false
+          isCheckPoint: false,
+          weight: 0
         })
       }
       initial_board.push(row);
@@ -102,11 +115,23 @@ export default function PathFinder(props) {
       setEndRelocation(false);
       setCheckPointRelocation(false);
     });
+    document.addEventListener("keydown", (event) => {
+      if (event.code === "KeyW") {
+        isWeightAllowed = true;
+      }
+    });
+    document.addEventListener("keyup", (event) => {
+      isWeightAllowed = false;
+    });
     createBoard();
   }, [])
 
   useEffect(() => {
     document.querySelector(".algo-desc").innerHTML = ALGO_DESC[algorithm];
+    const algo = OPTIONS["algorithm"].find(algo => algo.value === algorithm);
+    if (algo && !algo.isWeighted) {
+      clearWeights();
+    }
   }, [algorithm])
 
   const visualize = () => {
@@ -129,6 +154,40 @@ export default function PathFinder(props) {
     }
   }
 
+  const addWeightClass = (event) => {
+    if (weight === 5) {
+      event.target.classList.toggle("weight-vl");
+      event.target.classList.remove("weight-l");
+      event.target.classList.remove("weight-m");
+      event.target.classList.remove("weight-h");
+      event.target.classList.remove("weight-vh");
+    } else if (weight === 10) {
+      event.target.classList.remove("weight-vl");
+      event.target.classList.toggle("weight-l");
+      event.target.classList.remove("weight-m");
+      event.target.classList.remove("weight-h");
+      event.target.classList.remove("weight-vh");
+    } else if (weight === 20) {
+      event.target.classList.remove("weight-vl");
+      event.target.classList.remove("weight-l");
+      event.target.classList.toggle("weight-m");
+      event.target.classList.remove("weight-h");
+      event.target.classList.remove("weight-vh");
+    } else if (weight === 30) {
+      event.target.classList.remove("weight-vl");
+      event.target.classList.remove("weight-l");
+      event.target.classList.remove("weight-m");
+      event.target.classList.toggle("weight-h");
+      event.target.classList.remove("weight-vh");
+    } else if (weight === 50) {
+      event.target.classList.remove("weight-vl");
+      event.target.classList.remove("weight-l");
+      event.target.classList.remove("weight-m");
+      event.target.classList.remove("weight-h");
+      event.target.classList.toggle("weight-vh");
+    }
+  }
+
   const handleClick = (event, row, col) => {
     let cell = board[row][col];
     let { isStart, isEnd, isVisited, isCheckpoint_visited, isWall, isCheckPoint } = cell;
@@ -138,14 +197,33 @@ export default function PathFinder(props) {
       event.target.classList.remove("path");
       board[row][col].isVisited = false;
       board[row][col].isCheckpoint_visited = false;
-      event.target.classList.toggle("wall");
-      board[row][col].isWall = !(board[row][col].isWall);
+      if (isWeightAllowed) {
+        board[row][col].isWall = false;
+        event.target.classList.remove("wall");
+        // if (board[row][col].weight === weight) {
+        //   board[row][col].weight = 0;
+        // } else {
+        //   board[row][col].weight = weight;
+        // }
+        board[row][col].weight = board[row][col].weight === weight ? 0 : weight;
+        addWeightClass(event);
+      } else {
+        event.target.classList.remove("weight-vl");
+        event.target.classList.remove("weight-l");
+        event.target.classList.remove("weight-m");
+        event.target.classList.remove("weight-h");
+        event.target.classList.remove("weight-vh");
+        board[row][col].weight = 0;
+
+        event.target.classList.toggle("wall");
+        board[row][col].isWall = !(board[row][col].isWall);
+      }
     }
   }
 
   const handleMouseEnter = (event, row, col) => {
     let cell = board[row][col];
-    let { isStart, isEnd, isVisited, isCheckpoint_visited, isWall, isCheckPoint } = cell;
+    let { isStart, isEnd, isVisited, isCheckpoint_visited, isWall, isCheckPoint, weight } = cell;
     if (!isVisualizing && isMouseDown) {
       if (!isStart && !isEnd && !isStartRelocating && !isEndRelocating && !isCheckPointRelocating) {
         event.target.classList.remove("path");
@@ -175,7 +253,7 @@ export default function PathFinder(props) {
 
   const handleMouseDown = (event, row, col) => {
     let cell = board[row][col];
-    let { isStart, isEnd, isVisited, isCheckpoint_visited, isWall, isCheckPoint } = cell;
+    let { isStart, isEnd, isVisited, isCheckpoint_visited, isWall, isCheckPoint, weight } = cell;
     if (!isVisualizing) {
       if (isStart) {
         setStartRelocation(true);
@@ -195,7 +273,7 @@ export default function PathFinder(props) {
 
   const handleMouseLeave = (event, row, col) => {
     let cell = board[row][col];
-    let { isStart, isEnd, isVisited, isCheckpoint_visited, isWall, isCheckPoint } = cell;
+    let { isStart, isEnd, isVisited, isCheckpoint_visited, isWall, isCheckPoint, weight } = cell;
     if (!isVisualizing) {
       if (isCheckPointRelocating) {
         board[row][col].isCheckPoint = false;
@@ -206,7 +284,7 @@ export default function PathFinder(props) {
 
   const handleMouseUp = (event, row, col) => {
     let cell = board[row][col];
-    let { isStart, isEnd, isVisited, isCheckpoint_visited, isWall, isCheckPoint } = cell;
+    let { isStart, isEnd, isVisited, isCheckpoint_visited, isWall, isCheckPoint, weight } = cell;
     if (!isVisualizing) {
       if (isStartRelocating) {
         if (!isEnd && !isCheckPoint) {
@@ -237,6 +315,7 @@ export default function PathFinder(props) {
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[0].length; j++) {
         board[i][j].isWall = false;
+        board[i][j].weight = 0;
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("wall");
         board[i][j].isVisited = false;
         board[i][j].isCheckpoint_visited = false;
@@ -246,6 +325,15 @@ export default function PathFinder(props) {
       }
     }
   }
+
+  const clearWeights = () => {
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[0].length; j++) {
+        board[i][j].weight = 0;
+      }
+    }
+  }
+
 
   const resetBoard = () => {
     board = [];
@@ -260,7 +348,8 @@ export default function PathFinder(props) {
           isVisited: false,
           isCheckpoint_visited: false,
           isWall: false,
-          isCheckPoint: false
+          isCheckPoint: false,
+          weight: 0
         });
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("wall");
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
@@ -332,6 +421,7 @@ export default function PathFinder(props) {
       <Navbar visualize={visualize}
         setAlgorithm={setAlgorithm}
         setSpeed={setSpeed}
+        setWeight={setWeight}
         createMaze={createMaze}
         OPTIONS={OPTIONS}
         resetBoard={resetBoard}

@@ -5,7 +5,7 @@ import '../styles/Dropdown.css';
 
 export default function Dropdown(props) {
 
-  let { title, list, setAlgorithm, setSpeed, createMaze } = props;
+  let { title, list, setAlgorithm, setSpeed, setWeight, createMaze } = props;
   const [isOpen, setOpen] = useState(false);
   const [currentOption, setCurrentOption] = useState("");
 
@@ -27,6 +27,9 @@ export default function Dropdown(props) {
     if (title === "Speed") {
       setCurrentOption("fast");
     }
+    if (title === "Weight") {
+      setCurrentOption(5);
+    }
   }, []);
 
   const handleSelect = (value, method) => {
@@ -38,6 +41,9 @@ export default function Dropdown(props) {
       setCurrentOption(value);
     } else if (title === "Maze") {
       createMaze(method);
+    } else if (title === "Weight") {
+      setWeight(value);
+      setCurrentOption(value);
     }
   }
 
@@ -46,7 +52,7 @@ export default function Dropdown(props) {
       onClick={handleClick}
       style={isOpen ? { background: '#002433' } : {}}
       aria-controls="simple-menu" aria-haspopup="true">
-      <div className="dropdown-title">{title === "Speed" ? `Speed: ${currentOption}` : title} <ArrowDropDownIcon /></div>
+      <div className="dropdown-title">{title === "Speed" || title === "Weight" ? `${title}: ${currentOption}` : title} <ArrowDropDownIcon /></div>
       {title === "Algorithm" ?
         <span className="selected-option">{currentOption}</span>
         : ""}
