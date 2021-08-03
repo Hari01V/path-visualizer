@@ -75,7 +75,7 @@ export default function PathFinder(props) {
           isCheckpoint_visited: false,
           isWall: false,
           isCheckPoint: false,
-          weight: 0
+          weight: 1
         })
       }
       board.push(row);
@@ -94,7 +94,7 @@ export default function PathFinder(props) {
           isCheckpoint_visited: false,
           isWall: false,
           isCheckPoint: false,
-          weight: 0
+          weight: 1
         })
       }
       initial_board.push(row);
@@ -204,7 +204,7 @@ export default function PathFinder(props) {
       if (isWeightAllowed) {
         board[row][col].isWall = false;
         event.target.classList.remove("wall");
-        board[row][col].weight = board[row][col].weight === weight ? 0 : weight;
+        board[row][col].weight = board[row][col].weight === weight ? 1 : weight;
         addWeightClass(event);
       } else {
         event.target.classList.remove("weight-vl");
@@ -212,7 +212,7 @@ export default function PathFinder(props) {
         event.target.classList.remove("weight-m");
         event.target.classList.remove("weight-h");
         event.target.classList.remove("weight-vh");
-        board[row][col].weight = 0;
+        board[row][col].weight = 1;
 
         event.target.classList.toggle("wall");
         board[row][col].isWall = !(board[row][col].isWall);
@@ -233,7 +233,7 @@ export default function PathFinder(props) {
         if (isWeightAllowed) {
           board[row][col].isWall = false;
           event.target.classList.remove("wall");
-          board[row][col].weight = board[row][col].weight === weight ? 0 : weight;
+          board[row][col].weight = board[row][col].weight === weight ? 1 : weight;
           addWeightClass(event);
         } else {
           event.target.classList.remove("weight-vl");
@@ -241,7 +241,7 @@ export default function PathFinder(props) {
           event.target.classList.remove("weight-m");
           event.target.classList.remove("weight-h");
           event.target.classList.remove("weight-vh");
-          board[row][col].weight = 0;
+          board[row][col].weight = 1;
 
           event.target.classList.toggle("wall");
           board[row][col].isWall = !(board[row][col].isWall);
@@ -328,7 +328,7 @@ export default function PathFinder(props) {
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[0].length; j++) {
         board[i][j].isWall = false;
-        board[i][j].weight = 0;
+        board[i][j].weight = 1;
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("wall");
         board[i][j].isVisited = false;
         board[i][j].isCheckpoint_visited = false;
@@ -342,7 +342,7 @@ export default function PathFinder(props) {
   const clearWeights = () => {
     for (let i = 0; i < board.length; i++) {
       for (let j = 0; j < board[0].length; j++) {
-        board[i][j].weight = 0;
+        board[i][j].weight = 1;
         const cell = document.querySelector(`#cell-${i}-${j} .cell`);
         cell.classList.remove("weight-vl");
         cell.classList.remove("weight-l");
@@ -368,7 +368,7 @@ export default function PathFinder(props) {
           isCheckpoint_visited: false,
           isWall: false,
           isCheckPoint: false,
-          weight: 0
+          weight: 1
         });
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("wall");
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
