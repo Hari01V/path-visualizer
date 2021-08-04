@@ -91,7 +91,9 @@ const bfs_algorithm = (from_node, wait_time_factor, condition, board, no_of_rows
   //BFS ALGO
   let neighbours = [from_node];
   let visited_layer_css = condition === "checkpoint" ? "visited_to_checkpoint" : "visited";
-  document.querySelector(`#cell-${from_node.row}-${from_node.col} .cell`).classList.add(visited_layer_css);
+  setTimeout(() => {
+    document.querySelector(`#cell-${from_node.row}-${from_node.col} .cell`).classList.add(visited_layer_css);
+  }, wait_time_factor * time_count);
   let isGoalReached = false;
   var count = 0;
   let count_visited_nodes = 0;

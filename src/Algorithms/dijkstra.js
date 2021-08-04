@@ -107,7 +107,9 @@ const dijkstra_algorithm = (from_node, wait_time_factor, condition, board, no_of
   let shortestPathTree = [{ ...from_node, cummulativeSum: 0 }];
   nodes_been_to_SPT.add(`${from_node.row}-${from_node.col}`);
   let visited_layer_css = condition === "checkpoint" ? "visited_to_checkpoint" : "visited";
-  document.querySelector(`#cell-${from_node.row}-${from_node.col} .cell`).classList.add(visited_layer_css);
+  setTimeout(() => {
+    document.querySelector(`#cell-${from_node.row}-${from_node.col} .cell`).classList.add(visited_layer_css);
+  }, wait_time_factor * time_count);
   let isGoalReached = false;
   let count_visited_nodes = 0;
 

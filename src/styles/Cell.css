@@ -18,23 +18,14 @@
   color: red;
 }
 .cell.checkpoint{
+  width: 100%;
+  height: 100%;
   color: orange;
-  position: relative;
-  background: white !important;
-}
-.cell.checkpoint::after{
-  content: '';
-  width: 90%;
-  height: 90%;
-  background-image: url('../images/checkpointIcon.JPG');
-  /* background-image: url('../../node_modules/@material-ui/icons/Room.js'); */
+  background-image: url('../images/checkpoint.svg');
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  /* animation: beat 0.3s 0s; */
 }
 .cell.wall{
   background: #0c3547;
@@ -108,6 +99,20 @@
   }
   to{
     transform: scale(1.2);
+  }
+}
+@keyframes beat{
+  from{
+    transform: scale(0.5);
+  }
+  40%{
+    transform: scale(1.2);
+  }
+  80%{
+    transform: scale(0.7);
+  }
+  to{
+    transform: scale(1);
   }
 }
 @keyframes visited{

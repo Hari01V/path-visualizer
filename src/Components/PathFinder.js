@@ -141,10 +141,10 @@ export default function PathFinder(props) {
       const currAlgorithm = OPTIONS.algorithm.find(item => item.value === algorithm);
       if (currAlgorithm) {
         setVisualizing(true);
-        // if (!currAlgorithm.isWeighted) {
-        //   //WEIGHTS WILL BE REMOVED SINCE THIS IS UNWEIGHTED ALGORITHM
-        //   clearWeights();
-        // }
+        if (!currAlgorithm.isWeighted) {
+          //WEIGHTS WILL BE REMOVED SINCE THIS IS UNWEIGHTED ALGORITHM
+          clearWeights();
+        }
         currAlgorithm.method(board, setVisualizing, speed, setResult);
       } else {
         const element = document.querySelector(".algo-desc");
@@ -158,7 +158,8 @@ export default function PathFinder(props) {
     }
   }
 
-  const addWeightClass = (event) => {
+  const addWeightClass = (event, board, row, col) => {
+    board[row][col].weight = board[row][col].weight === weight ? 1 : weight;
     if (weight === 5) {
       event.target.classList.toggle("weight-vl");
       event.target.classList.remove("weight-l");
@@ -204,8 +205,7 @@ export default function PathFinder(props) {
       if (isWeightAllowed) {
         board[row][col].isWall = false;
         event.target.classList.remove("wall");
-        board[row][col].weight = board[row][col].weight === weight ? 1 : weight;
-        addWeightClass(event);
+        addWeightClass(event, board, row, col);
       } else {
         event.target.classList.remove("weight-vl");
         event.target.classList.remove("weight-l");
@@ -233,8 +233,7 @@ export default function PathFinder(props) {
         if (isWeightAllowed) {
           board[row][col].isWall = false;
           event.target.classList.remove("wall");
-          board[row][col].weight = board[row][col].weight === weight ? 1 : weight;
-          addWeightClass(event);
+          addWeightClass(event, board, row, col);
         } else {
           event.target.classList.remove("weight-vl");
           event.target.classList.remove("weight-l");
@@ -335,6 +334,11 @@ export default function PathFinder(props) {
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited_to_checkpoint");
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-vl");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-l");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-m");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-h");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-vh");
       }
     }
   }
@@ -375,6 +379,11 @@ export default function PathFinder(props) {
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited_to_checkpoint");
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
         document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("checkpoint");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-vl");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-l");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-m");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-h");
+        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-vh");
       }
       board.push(row);
     }
