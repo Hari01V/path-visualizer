@@ -1,5 +1,4 @@
 const visualize_Dijkstra = (board, setVisualizing, speed, setResult) => {
-  console.log(board);
   let result = {
     algorithm: "Breadth First Search",
     visited_nodes: 0,
@@ -63,9 +62,7 @@ const visualize_Dijkstra = (board, setVisualizing, speed, setResult) => {
     final_time_count = till_end.time_count;
 
     let path_to_checkpoint = backtrackPath(till_checkpoint.neighbours, "checkpoint");
-    console.log(path_to_checkpoint);
     let path_to_end = backtrackPath(till_end.neighbours, "end");
-    console.log(path_to_end);
     final_path = path_to_end;
     for (const path_node of path_to_checkpoint) {
       final_path.push(path_node);
@@ -76,7 +73,6 @@ const visualize_Dijkstra = (board, setVisualizing, speed, setResult) => {
 
 
   //PATH
-  // const path = backtrackPath(neighbours);
   for (let i = final_path.length - 1; i >= 0; i--) {
     let { row, col } = final_path[i];
     setTimeout(() => {
@@ -114,10 +110,16 @@ const dijkstra_algorithm = (from_node, wait_time_factor, condition, board, no_of
   document.querySelector(`#cell-${from_node.row}-${from_node.col} .cell`).classList.add(visited_layer_css);
   let isGoalReached = false;
   let count_visited_nodes = 0;
+
   while (!isGoalReached && shortestPathTree.length > 0) {
     const choseNode = shortestPathTree.pop();
-    board[choseNode.row][choseNode.col].isVisited = true;
-    choseNode.isVisited = true;
+    if (condition === "end_node") {
+      board[choseNode.row][choseNode.col].isVisited = true;
+      choseNode.isVisited = true;
+    } else if (condition === "checkpoint") {
+      board[choseNode.row][choseNode.col].isCheckpoint_visited = true;
+      choseNode.isCheckpoint_visited = true;
+    }
     neighbours.push(choseNode);
     count_visited_nodes++;
     setTimeout(() => {
@@ -128,12 +130,15 @@ const dijkstra_algorithm = (from_node, wait_time_factor, condition, board, no_of
       neighbours.push(choseNode);
       isGoalReached = true;
       break;
+    } else if (condition === "checkpoint" && board[choseNode.row][choseNode.col].isCheckPoint) {
+      neighbours.push(choseNode);
+      isGoalReached = true;
+      break;
     }
     //add visited class
     let neighbour_nodes = find_neighbours(choseNode, no_of_rows, no_of_cols, board);
     for (let node of neighbour_nodes) {
       let { row, col, isWall, isVisited, isStart, isEnd, isCheckPoint, isCheckpoint_visited, weight } = node;
-      console.log(weight);
       if (!isStart) {
         node = {
           ...node, parent: {
@@ -150,18 +155,10 @@ const dijkstra_algorithm = (from_node, wait_time_factor, condition, board, no_of
           // neighbours.push(node);
         }
       } else if (condition === "checkpoint") {
-        if (isCheckPoint) {
+        if (!isWall && !isCheckpoint_visited && !isStart && !nodes_been_to_SPT.has(`${row}-${col}`)) {
+          nodes_been_to_SPT.add(`${row}-${col}`);
+          shortestPathTree.push(node);
           //   neighbours.push(node);
-          //   isGoalReached = true;
-          //   break;
-        } else if (!isWall && !isCheckpoint_visited && !isStart) {
-          //   neighbours.push(node);
-          //   board[row][col].isCheckpoint_visited = true;
-          //   count_visited_nodes++;
-          //   setTimeout(() => {
-          //     document.querySelector(`#cell-${row}-${col} .cell`).classList.add(visited_layer_css);
-          //   }, wait_time_factor * time_count);
-          //   time_count++;
         }
       }
     }
@@ -192,6 +189,9 @@ const backtrackPath = (neighbours, to) => {
       let node = neighbours[count];
       while (!(node.isStart) && count > 0) {
         path.push(node);
+        if (node.isCheckPoint) {
+          break;
+        }
         let { row, col } = node.parent;
         //find parent
         while (count > 0 && (neighbours[count].row !== row || neighbours[count].col !== col)) {

@@ -62,9 +62,7 @@ const visualize_BFS = (board, setVisualizing, speed, setResult) => {
     final_time_count = till_end.time_count;
 
     let path_to_checkpoint = backtrackPath(till_checkpoint.neighbours, "checkpoint");
-    console.log(path_to_checkpoint);
     let path_to_end = backtrackPath(till_end.neighbours, "end");
-    console.log(path_to_end);
     final_path = path_to_end;
     for (const path_node of path_to_checkpoint) {
       final_path.push(path_node);
