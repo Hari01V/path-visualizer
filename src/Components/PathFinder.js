@@ -7,6 +7,7 @@ import '../styles/PathFinder.css';
 
 import visualize_Dijkstra from '../Algorithms/dijkstra';
 import visualize_BFS from '../Algorithms/bfs';
+import visualize_DFS from '../Algorithms/dfs';
 import recursiveDivision from '../MazeAlgorithms/recursiveDivision';
 
 // import LockIcon from '@material-ui/icons/Lock';
@@ -16,7 +17,8 @@ let board = [];
 let OPTIONS = {
   "algorithm": [
     { name: "Breadth First Search", value: "bfs", method: visualize_BFS, isWeighted: false },
-    { name: "Dijkstra's Algorithm", value: "dijkstra", method: visualize_Dijkstra, isWeighted: true }
+    { name: "Dijkstra's Algorithm", value: "dijkstra", method: visualize_Dijkstra, isWeighted: true },
+    { name: "Depth First Search", value: "dfs", method: visualize_DFS, isWeighted: false }
   ],
   "speed": [
     { name: "Fast", value: "fast" },
