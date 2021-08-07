@@ -8,6 +8,7 @@ import '../styles/PathFinder.css';
 import visualize_Dijkstra from '../Algorithms/dijkstra';
 import visualize_BFS from '../Algorithms/bfs';
 import visualize_DFS from '../Algorithms/dfs';
+import visualize_Astar from '../Algorithms/astar';
 import recursiveDivision from '../MazeAlgorithms/recursiveDivision';
 
 // import LockIcon from '@material-ui/icons/Lock';
@@ -18,6 +19,7 @@ let OPTIONS = {
   "algorithm": [
     { name: "Breadth First Search", value: "bfs", method: visualize_BFS, isWeighted: false },
     { name: "Dijkstra's Algorithm", value: "dijkstra", method: visualize_Dijkstra, isWeighted: true },
+    { name: "A* Search Algorithm", value: "astar", method: visualize_Astar, isWeighted: true },
     { name: "Depth First Search", value: "dfs", method: visualize_DFS, isWeighted: false }
   ],
   "speed": [
@@ -40,7 +42,9 @@ let OPTIONS = {
 let ALGO_DESC = {
   "": "Pick an Algorithm!",
   "bfs": "Breath-first Search is <strong>unweighted</strong> and <strong>guarantees</strong> the shortest path!",
-  "dijkstra": "Dijkstra's Algorithm is <strong>weighted</strong> and <strong>guarantees</strong> the shortest path!"
+  "dijkstra": "Dijkstra's Algorithm is <strong>weighted</strong> and <strong>guarantees</strong> the shortest path!",
+  "astar": "A* Search is <strong>weighted</strong> and <strong>guarantees</strong> the shortest path!",
+  "dfs": "Depth-first Search is <strong>unweighted</strong> and does <strong>not guarantee</strong> the shortest path!"
 }
 
 let isWeightAllowed = false;
