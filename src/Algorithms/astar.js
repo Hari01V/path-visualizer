@@ -50,7 +50,7 @@ const visualize_Astar = (board, setVisualizing, speed, setResult) => {
 
     result.path_cost = final_path.length;
   } else {
-    const till_checkpoint = astar_algorithm(start_node, end_node, wait_time_factor, "checkpoint", board, no_of_rows, no_of_cols, 1);
+    const till_checkpoint = astar_algorithm(start_node, CHECKPOINT, wait_time_factor, "checkpoint", board, no_of_rows, no_of_cols, 1);
 
     const till_end = astar_algorithm(board[CHECKPOINT.row][CHECKPOINT.col], end_node, wait_time_factor, "end_node", board, no_of_rows, no_of_cols, till_checkpoint.time_count);
 
@@ -90,9 +90,9 @@ const compare_F_desc = (a, b) => {
   let a_f = a.g + a.h;
   let b_f = b.g + b.h;
   if (b_f === a_f) {
-    if (b.h === a.h) {
-      return b.g - a.g;
-    }
+    // if (b.h === a.h) {
+    //   return b.g - a.g;
+    // }
     return b.h - a.h;
   }
   return b_f - a_f;
@@ -104,15 +104,16 @@ const manhattanDist = (a, b) => {
 
 const lowerF_in_list = (list, currNode) => {
   let { row, col, g, h } = currNode;
-  list.forEach(node => {
-    if (node.row === row && node.col === col) {
-      if ((node.g + node.h) <= (g + h)) {
-        // console.log(`${node.row}-${node.col}-g${node.g}-h${node.h} ----- ${row}-${col}-g${g}-h${h}`);
-        return true;
-      }
+  const foundNode = list.find(node => node.row === row && node.col === col);
+  if (!foundNode) {
+    return false;
+  } else {
+    if ((foundNode.g + foundNode.h) <= (g + h)) {
+      return true;
+    } else {
+      return false;
     }
-  });
-  return false;
+  }
 }
 
 const astar_algorithm = (from_node, end_node, wait_time_factor, condition, board, no_of_rows, no_of_cols, time_count) => {
@@ -163,13 +164,16 @@ const astar_algorithm = (from_node, end_node, wait_time_factor, condition, board
       if (lowerF_in_list(CLOSED_LIST, node)) {
         continue;
       }
+      if (lowerF_in_list(OPEN_LIST, node)) {
+        continue;
+      }
       if (condition === "end_node") {
-        if (!isWall && !isVisited && !isStart && !isCheckPoint && !lowerF_in_list(OPEN_LIST, node)) {
+        if (!isWall && !isVisited && !isStart && !isCheckPoint) {
           OPEN_LIST = OPEN_LIST.filter(element => element.row !== node.row || element.col !== node.col);
           OPEN_LIST.push(node);
         }
       } else if (condition === "checkpoint") {
-        if (!isWall && !isCheckpoint_visited && !isStart && !lowerF_in_list(OPEN_LIST, node)) {
+        if (!isWall && !isCheckpoint_visited && !isStart) {
           OPEN_LIST = OPEN_LIST.filter(element => element.row !== node.row || element.col !== node.col);
           OPEN_LIST.push(node);
         }
@@ -224,6 +228,7 @@ const backtrackPath = (neighbours, to) => {
 const find_neighbours = (node, rows, cols, board) => {
   let { row, col } = node;
   let arr = [];
+  // right bottom left top
   if (col + 1 < cols && !board[row][col + 1].isVisited) {
     arr.push(board[row][col + 1]);
   }
