@@ -31,7 +31,7 @@ export default function Navbar(props) {
               onClick={clearPath}>Clear Path</button>
           </div>
           <div className="content-2-2">
-            <button className="navbar-btn"
+            <button id="checkpoint-btn" className="navbar-btn"
               onClick={AddCheckPoint}>{ischeckPointAdded ? "Remove" : "Add"} Checkpoint</button>
             <Dropdown title={"Weight"} list={weightList} setWeight={setWeight} />
           </div>

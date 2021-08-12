@@ -10,6 +10,7 @@ import visualize_BFS from '../Algorithms/bfs';
 import visualize_DFS from '../Algorithms/dfs';
 import visualize_Astar from '../Algorithms/astar';
 import visualize_greedy from '../Algorithms/greedyBFS';
+import visualize_biBFS from '../Algorithms/bidirectionalBFS';
 import recursiveDivision from '../MazeAlgorithms/recursiveDivision';
 
 // import LockIcon from '@material-ui/icons/Lock';
@@ -18,11 +19,12 @@ let board = [];
 
 let OPTIONS = {
   "algorithm": [
-    { name: "Breadth First Search", value: "bfs", method: visualize_BFS, isWeighted: false },
-    { name: "Dijkstra's Algorithm", value: "dijkstra", method: visualize_Dijkstra, isWeighted: true },
-    { name: "A* Search Algorithm", value: "astar", method: visualize_Astar, isWeighted: true },
-    { name: "Depth First Search", value: "dfs", method: visualize_DFS, isWeighted: false },
-    { name: "Greedy Best First", value: "greedy", method: visualize_greedy, isWeighted: true }
+    { name: "Breadth First Search", value: "bfs", method: visualize_BFS, isWeighted: false, checkPointNotAllowed: false },
+    { name: "Dijkstra's Algorithm", value: "dijkstra", method: visualize_Dijkstra, isWeighted: true, checkPointNotAllowed: false },
+    { name: "A* Search Algorithm", value: "astar", method: visualize_Astar, isWeighted: true, checkPointNotAllowed: false },
+    { name: "Depth First Search", value: "dfs", method: visualize_DFS, isWeighted: false, checkPointNotAllowed: false },
+    { name: "Greedy Best First", value: "greedy", method: visualize_greedy, isWeighted: true, checkPointNotAllowed: false },
+    { name: "Bi-directional BFS", value: "biBFS", method: visualize_biBFS, isWeighted: false, checkPointNotAllowed: true }
   ],
   "speed": [
     { name: "Fast", value: "fast" },
@@ -43,11 +45,12 @@ let OPTIONS = {
 
 let ALGO_DESC = {
   "": "Pick an Algorithm!",
-  "bfs": "Breath-first Search is <strong>unweighted</strong> and <strong>guarantees</strong> the shortest path!",
+  "bfs": "Breadth-first Search is <strong>unweighted</strong> and <strong>guarantees</strong> the shortest path!",
   "dijkstra": "Dijkstra's Algorithm is <strong>weighted</strong> and <strong>guarantees</strong> the shortest path!",
   "astar": "A* Search is <strong>weighted</strong> and <strong>guarantees</strong> the shortest path!",
   "dfs": "Depth-first Search is <strong>unweighted</strong> and does <strong>not guarantee</strong> the shortest path!",
-  "greedy": "Greedy Best-first Search is <strong>weighted</strong> and does <strong>not guarantee</strong> the shortest path!"
+  "greedy": "Greedy Best-first Search is <strong>weighted</strong> and does <strong>not guarantee</strong> the shortest path!",
+  "biBFS": "Bi-Directional Breadth-First-Search is <strong>unweighted</strong> and <strong>guarantees</strong> the shortest path!"
 }
 
 let isWeightAllowed = false;
@@ -140,6 +143,11 @@ export default function PathFinder(props) {
     const algo = OPTIONS["algorithm"].find(algo => algo.value === algorithm);
     if (algo && !algo.isWeighted) {
       clearWeights();
+      //SNACK BAR: CURR ALGORITHM IS UNWEIGHTED!
+      // showSnackBar("Selected Algorithm is Unweighted, so the weights have been removed!");
+    }
+    if (algo && algo.checkPointNotAllowed) {
+      AddCheckPoint();
     }
   }, [algorithm])
 
@@ -151,8 +159,9 @@ export default function PathFinder(props) {
       if (currAlgorithm) {
         setVisualizing(true);
         if (!currAlgorithm.isWeighted) {
-          //WEIGHTS WILL BE REMOVED SINCE THIS IS UNWEIGHTED ALGORITHM
           clearWeights();
+          //SNACK BAR: CURR ALGORITHM IS UNWEIGHTED!
+          // showSnackBar("Selected Algorithm is Unweighted, so the weights have been removed!");
         }
         currAlgorithm.method(board, setVisualizing, speed, setResult);
       } else {
@@ -412,7 +421,8 @@ export default function PathFinder(props) {
   }
 
   const AddCheckPoint = () => {
-    if (ischeckPointAdded) {
+    const currAlgo = OPTIONS["algorithm"].find(algo => algo.value === algorithm);
+    if (currAlgo && currAlgo.checkPointNotAllowed) {
       for (let i = 0; i < row; i++) {
         for (let j = 0; j < col; j++) {
           if (board[i][j].isCheckPoint) {
@@ -422,28 +432,42 @@ export default function PathFinder(props) {
         }
       }
       setCheckPointAdded(false);
+      //SNACK BAR: CURRENT ALGORITHM DOES NOT SUPPORT CHECKPOINT
+      // showSnackBar("Selected Algorithm does not support CheckPoint !");
     } else {
-      let row = 8;
-      let col = 20;
-      if (!board[8][20].isStart && !board[8][20].isEnd) {
-        row = 8;
-        col = 20;
-      } else if (!board[8][21].isStart && !board[8][21].isEnd) {
-        row = 8;
-        col = 21;
-      } else if (!board[8][19].isStart && !board[8][19].isEnd) {
-        row = 8;
-        col = 19;
+      if (ischeckPointAdded) {
+        for (let i = 0; i < row; i++) {
+          for (let j = 0; j < col; j++) {
+            if (board[i][j].isCheckPoint) {
+              board[i][j].isCheckPoint = false;
+              document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("checkpoint");
+            }
+          }
+        }
+        setCheckPointAdded(false);
+      } else {
+        let row = 8;
+        let col = 20;
+        if (!board[8][20].isStart && !board[8][20].isEnd) {
+          row = 8;
+          col = 20;
+        } else if (!board[8][21].isStart && !board[8][21].isEnd) {
+          row = 8;
+          col = 21;
+        } else if (!board[8][19].isStart && !board[8][19].isEnd) {
+          row = 8;
+          col = 19;
+        }
+        board[row][col].isVisited = false;
+        board[row][col].isCheckpoint_visited = false;
+        board[row][col].isCheckPoint = true;
+        document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("visited");
+        document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("visited_to_checkpoint");
+        document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("path");
+        document.querySelector(`#cell-${row}-${col} .cell`).classList.add("checkpoint");
+        setMatrix(board);
+        setCheckPointAdded(true);
       }
-      board[row][col].isVisited = false;
-      board[row][col].isCheckpoint_visited = false;
-      board[row][col].isCheckPoint = true;
-      document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("visited");
-      document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("visited_to_checkpoint");
-      document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("path");
-      document.querySelector(`#cell-${row}-${col} .cell`).classList.add("checkpoint");
-      setMatrix(board);
-      setCheckPointAdded(true);
     }
   }
 
