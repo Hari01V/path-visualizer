@@ -11,7 +11,9 @@ import visualize_DFS from '../Algorithms/dfs';
 import visualize_Astar from '../Algorithms/astar';
 import visualize_greedy from '../Algorithms/greedyBFS';
 import visualize_biBFS from '../Algorithms/bidirectionalBFS';
+
 import recursiveDivision from '../MazeAlgorithms/recursiveDivision';
+import weightHexCage from '../MazeAlgorithms/weightHexCage';
 
 // import LockIcon from '@material-ui/icons/Lock';
 
@@ -32,7 +34,8 @@ let OPTIONS = {
     { name: "Slow", value: "slow" }
   ],
   "maze": [
-    { name: "Recursive Division", method: recursiveDivision }
+    { name: "Recursive Division", method: recursiveDivision, value: "recursive-div" },
+    { name: "Weight Hex Cage", method: weightHexCage, value: "weight-hex" }
   ],
   "weight": [
     { name: "very less : 5", value: 5 },
