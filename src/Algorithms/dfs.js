@@ -67,11 +67,11 @@ const visualize_DFS = (board, setVisualizing, speed, setResult) => {
     for (const path_node of path_to_checkpoint) {
       final_path.push(path_node);
     }
-
     result.path_cost = final_path.length - 1;
   }
 
   //PATH
+  let pathCost = 0;
   for (let i = final_path.length - 1; i >= 0; i--) {
     let { row, col } = final_path[i];
     setTimeout(() => {
@@ -129,11 +129,11 @@ const dfs_algorithm = (from_node, wait_time_factor, condition, board, no_of_rows
         };
       }
       if (condition === "end_node") {
-        if (!isWall && !isVisited && !isStart && !isCheckPoint) {
+        if ((!isWall || isEnd) && !isVisited && !isStart && !isCheckPoint) {
           neighbours.push(node);
         }
       } else if (condition === "checkpoint") {
-        if (!isWall && !isCheckpoint_visited && !isStart) {
+        if ((!isWall || isCheckPoint) && !isCheckpoint_visited && !isStart) {
           neighbours.push(node);
         }
       }

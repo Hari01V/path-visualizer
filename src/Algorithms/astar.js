@@ -47,8 +47,6 @@ const visualize_Astar = (board, setVisualizing, speed, setResult) => {
 
     final_time_count = time_count;
     final_path = backtrackPath(CLOSED_LIST, "end");
-
-    result.path_cost = final_path.length;
   } else {
     const till_checkpoint = astar_algorithm(start_node, CHECKPOINT, wait_time_factor, "checkpoint", board, no_of_rows, no_of_cols, 1);
 
@@ -67,14 +65,13 @@ const visualize_Astar = (board, setVisualizing, speed, setResult) => {
     for (const path_node of path_to_checkpoint) {
       final_path.push(path_node);
     }
-
-    result.path_cost = final_path.length - 1;
   }
 
-
   //PATH
+  let pathCost = 0;
   for (let i = final_path.length - 1; i >= 0; i--) {
-    let { row, col } = final_path[i];
+    let { row, col, weight } = final_path[i];
+    pathCost += weight;
     setTimeout(() => {
       document.querySelector(`#cell-${row}-${col} .cell`).classList.add("path");
       if (i == 0) {
@@ -84,6 +81,7 @@ const visualize_Astar = (board, setVisualizing, speed, setResult) => {
     }, wait_time_factor * final_time_count);
     final_time_count++;
   }
+  result.path_cost = pathCost;
 }
 
 const compare_F_desc = (a, b) => {
@@ -168,12 +166,12 @@ const astar_algorithm = (from_node, end_node, wait_time_factor, condition, board
         continue;
       }
       if (condition === "end_node") {
-        if (!isWall && !isVisited && !isStart && !isCheckPoint) {
+        if ((!isWall || isEnd) && !isVisited && !isStart && !isCheckPoint) {
           OPEN_LIST = OPEN_LIST.filter(element => element.row !== node.row || element.col !== node.col);
           OPEN_LIST.push(node);
         }
       } else if (condition === "checkpoint") {
-        if (!isWall && !isCheckpoint_visited && !isStart) {
+        if ((!isWall || isCheckPoint) && !isCheckpoint_visited && !isStart) {
           OPEN_LIST = OPEN_LIST.filter(element => element.row !== node.row || element.col !== node.col);
           OPEN_LIST.push(node);
         }

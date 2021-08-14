@@ -47,8 +47,6 @@ const visualize_Dijkstra = (board, setVisualizing, speed, setResult) => {
 
     final_time_count = time_count;
     final_path = backtrackPath(neighbours, "end");
-
-    result.path_cost = final_path.length;
   } else {
     const till_checkpoint = dijkstra_algorithm(start_node, wait_time_factor, "checkpoint", board, no_of_rows, no_of_cols, 1);
 
@@ -67,14 +65,14 @@ const visualize_Dijkstra = (board, setVisualizing, speed, setResult) => {
     for (const path_node of path_to_checkpoint) {
       final_path.push(path_node);
     }
-
-    result.path_cost = final_path.length - 1;
   }
 
 
   //PATH
+  let pathCost = 0;
   for (let i = final_path.length - 1; i >= 0; i--) {
-    let { row, col } = final_path[i];
+    let { row, col, weight } = final_path[i];
+    pathCost += weight;
     setTimeout(() => {
       document.querySelector(`#cell-${row}-${col} .cell`).classList.add("path");
       if (i == 0) {
@@ -84,6 +82,7 @@ const visualize_Dijkstra = (board, setVisualizing, speed, setResult) => {
     }, wait_time_factor * final_time_count);
     final_time_count++;
   }
+  result.path_cost = pathCost;
 }
 
 const compareDescendingOrder = (a, b) => {
@@ -151,13 +150,13 @@ const dijkstra_algorithm = (from_node, wait_time_factor, condition, board, no_of
         };
       }
       if (condition === "end_node") {
-        if (!isWall && !isVisited && !isStart && !isCheckPoint && !nodes_been_to_SPT.has(`${row}-${col}`)) {
+        if ((!isWall || isEnd) && !isVisited && !isStart && !isCheckPoint && !nodes_been_to_SPT.has(`${row}-${col}`)) {
           nodes_been_to_SPT.add(`${row}-${col}`);
           shortestPathTree.push(node);
           // neighbours.push(node);
         }
       } else if (condition === "checkpoint") {
-        if (!isWall && !isCheckpoint_visited && !isStart && !nodes_been_to_SPT.has(`${row}-${col}`)) {
+        if ((!isWall || isCheckPoint) && !isCheckpoint_visited && !isStart && !nodes_been_to_SPT.has(`${row}-${col}`)) {
           nodes_been_to_SPT.add(`${row}-${col}`);
           shortestPathTree.push(node);
           //   neighbours.push(node);

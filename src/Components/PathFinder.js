@@ -474,9 +474,10 @@ export default function PathFinder(props) {
     }
   }
 
-  const createMaze = (method) => {
+  const createMaze = (method, weight) => {
     if (!isVisualizing) {
-      method(board, speed);
+      setVisualizing(true);
+      method(board, speed, weight, setVisualizing);
     }
   }
 
@@ -492,7 +493,8 @@ export default function PathFinder(props) {
         clearWalls={clearWalls}
         clearPath={clearPath}
         AddCheckPoint={AddCheckPoint}
-        ischeckPointAdded={ischeckPointAdded} />
+        ischeckPointAdded={ischeckPointAdded}
+        weight={weight} />
       <div className="algo-desc"></div>
       <div className="search-result">
         <div className="result-part">

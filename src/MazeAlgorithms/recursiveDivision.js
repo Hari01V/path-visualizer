@@ -1,6 +1,6 @@
 let time_count = 0;
 
-const recursiveDivision = (board, speed) => {
+const recursiveDivision = (board, speed, weight, setVisualizing) => {
   let no_of_rows = board.length;
   let no_of_cols = board[0].length;
 
@@ -26,9 +26,15 @@ const recursiveDivision = (board, speed) => {
       document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("wall");
       board[i][j].isVisited = false;
       board[i][j].isCheckpoint_visited = false;
+      board[i][j].weight = 1;
       document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
       document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited_to_checkpoint");
       document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
+      document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-vl");
+      document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-l");
+      document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-m");
+      document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-h");
+      document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-vh");
     }
   }
 
@@ -37,6 +43,9 @@ const recursiveDivision = (board, speed) => {
   time_count = 0;
 
   divideChamber(board, row_range, col_range, 0, wait_time_factor);
+  setTimeout(() => {
+    setVisualizing(false);
+  }, 15000);
 }
 
 const randomNumber = (from, to, avoid) => {

@@ -5,7 +5,7 @@ import '../styles/Dropdown.css';
 
 export default function Dropdown(props) {
 
-  let { title, list, setAlgorithm, setSpeed, setWeight, createMaze } = props;
+  let { title, list, setAlgorithm, setSpeed, setWeight, createMaze, weight } = props;
   const [isOpen, setOpen] = useState(false);
   const [currentOption, setCurrentOption] = useState("");
 
@@ -40,7 +40,7 @@ export default function Dropdown(props) {
       setSpeed(value);
       setCurrentOption(value);
     } else if (title === "Maze") {
-      createMaze(method);
+      createMaze(method, weight);
     } else if (title === "Weight") {
       setWeight(value);
       setCurrentOption(value);
