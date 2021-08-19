@@ -37,7 +37,7 @@ const visualize_biBFS = (board, setVisualizing, speed, setResult) => {
   }
 
   //BIBFS & PATH
-  let final_path = null;
+  let final_path = [];
   let final_time_count = 1;
   const { queue_from_start, queue_from_end, intersection_node, count_visited_nodes, time_count } = bibfs_algorithm(start_node, end_node, wait_time_factor, board, tmpBoard, no_of_rows, no_of_cols, 1);
   result.visited_nodes = count_visited_nodes;
@@ -46,7 +46,9 @@ const visualize_biBFS = (board, setVisualizing, speed, setResult) => {
   result.time_taken = (t1 - t0).toFixed(3);
 
   final_time_count = time_count;
-  final_path = backtrackPath(queue_from_start, queue_from_end, intersection_node);
+  if (intersection_node) {
+    final_path = backtrackPath(queue_from_start, queue_from_end, intersection_node);
+  }
   result.path_cost = final_path.length;
 
   // PATH
@@ -61,17 +63,12 @@ const visualize_biBFS = (board, setVisualizing, speed, setResult) => {
     }, wait_time_factor * final_time_count);
     final_time_count++;
   }
-  // for (let i = 0; i < final_path.length - 1; i++) {
-  //   let { row, col } = final_path[i];
-  //   setTimeout(() => {
-  //     document.querySelector(`#cell-${row}-${col} .cell`).classList.add("path");
-  //     if (i == 0) {
-  //       setVisualizing(false);
-  //       setResult(result);
-  //     }
-  //   }, wait_time_factor * final_time_count);
-  //   final_time_count++;
-  // }
+  if (!intersection_node) {
+    setTimeout(() => {
+      setVisualizing(false);
+      setResult(result);
+    }, wait_time_factor * final_time_count);
+  }
 }
 
 const bibfs_algorithm = (from_node, end_node, wait_time_factor, board, tmpBoard, no_of_rows, no_of_cols, time_count) => {
@@ -91,9 +88,14 @@ const bibfs_algorithm = (from_node, end_node, wait_time_factor, board, tmpBoard,
   var count_from_end = 0;
   let count_visited_nodes = 0;
 
-  while (!isGoalReached) {
+  while (!isGoalReached && (count_from_start < queue_from_start.length || count_from_end < queue_from_end.length)) {
     //FROM START POINT
-    let neighbours_start = find_neighbours(queue_from_start[count_from_start], no_of_rows, no_of_cols, board);
+    let neighbours_start = [];
+    if (queue_from_start[count_from_start]) {
+      neighbours_start = find_neighbours(queue_from_start[count_from_start], no_of_rows, no_of_cols, board);
+    } else {
+      count_from_start--;
+    }
 
     for (let node of neighbours_start) {
       let { row, col, isWall, isVisited, isStart, isEnd, isCheckPoint, isCheckpoint_visited } = node;
@@ -124,7 +126,12 @@ const bibfs_algorithm = (from_node, end_node, wait_time_factor, board, tmpBoard,
     count_from_start++;
 
     //FROM END POINT
-    let neighbours_end = find_neighbours(queue_from_end[count_from_end], no_of_rows, no_of_cols, board);
+    let neighbours_end = [];
+    if (queue_from_end[count_from_end]) {
+      neighbours_end = find_neighbours(queue_from_end[count_from_end], no_of_rows, no_of_cols, board);
+    } else {
+      count_from_end--;
+    }
 
     for (let node of neighbours_end) {
       let { row, col, isWall, isVisited, isStart, isEnd, isCheckPoint, isCheckpoint_visited } = node;

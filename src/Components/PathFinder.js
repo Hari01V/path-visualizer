@@ -14,6 +14,7 @@ import visualize_biBFS from '../Algorithms/bidirectionalBFS';
 
 import recursiveDivision from '../MazeAlgorithms/recursiveDivision';
 import weightHexCage from '../MazeAlgorithms/weightHexCage';
+import { Guide } from './Guide';
 
 // import LockIcon from '@material-ui/icons/Lock';
 
@@ -345,100 +346,96 @@ export default function PathFinder(props) {
   }
 
   const clearWalls = () => {
-    for (let i = 0; i < board.length; i++) {
-      for (let j = 0; j < board[0].length; j++) {
-        board[i][j].isWall = false;
-        board[i][j].weight = 1;
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("wall");
-        board[i][j].isVisited = false;
-        board[i][j].isCheckpoint_visited = false;
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited_to_checkpoint");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-vl");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-l");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-m");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-h");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-vh");
+    if (!isVisualizing) {
+      for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[0].length; j++) {
+          board[i][j].isWall = false;
+          board[i][j].weight = 1;
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("wall");
+          board[i][j].isVisited = false;
+          board[i][j].isCheckpoint_visited = false;
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited_to_checkpoint");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-vl");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-l");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-m");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-h");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-vh");
+        }
       }
     }
   }
 
   const clearWeights = () => {
-    for (let i = 0; i < board.length; i++) {
-      for (let j = 0; j < board[0].length; j++) {
-        board[i][j].weight = 1;
-        const cell = document.querySelector(`#cell-${i}-${j} .cell`);
-        cell.classList.remove("weight-vl");
-        cell.classList.remove("weight-l");
-        cell.classList.remove("weight-m");
-        cell.classList.remove("weight-h");
-        cell.classList.remove("weight-vh");
+    if (!isVisualizing) {
+      for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[0].length; j++) {
+          board[i][j].weight = 1;
+          const cell = document.querySelector(`#cell-${i}-${j} .cell`);
+          cell.classList.remove("weight-vl");
+          cell.classList.remove("weight-l");
+          cell.classList.remove("weight-m");
+          cell.classList.remove("weight-h");
+          cell.classList.remove("weight-vh");
+        }
       }
     }
   }
 
 
   const resetBoard = () => {
-    board = [];
-    for (let i = 0; i < row; i++) {
-      let row = [];
-      for (let j = 0; j < col; j++) {
-        row.push({
-          row: i,
-          col: j,
-          isStart: i === initial_start.row && j === initial_start.col,
-          isEnd: i === initial_end.row && j === initial_end.col,
-          isVisited: false,
-          isCheckpoint_visited: false,
-          isWall: false,
-          isCheckPoint: false,
-          weight: 1
-        });
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("wall");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited_to_checkpoint");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("checkpoint");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-vl");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-l");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-m");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-h");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-vh");
+    if (!isVisualizing) {
+      board = [];
+      for (let i = 0; i < row; i++) {
+        let row = [];
+        for (let j = 0; j < col; j++) {
+          row.push({
+            row: i,
+            col: j,
+            isStart: i === initial_start.row && j === initial_start.col,
+            isEnd: i === initial_end.row && j === initial_end.col,
+            isVisited: false,
+            isCheckpoint_visited: false,
+            isWall: false,
+            isCheckPoint: false,
+            weight: 1
+          });
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("wall");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited_to_checkpoint");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("checkpoint");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-vl");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-l");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-m");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-h");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-vh");
+        }
+        board.push(row);
       }
-      board.push(row);
+      setMatrix(board);
     }
-    setMatrix(board);
   }
 
   const clearPath = () => {
-    for (let i = 0; i < board.length; i++) {
-      for (let j = 0; j < board[0].length; j++) {
-        board[i][j].isVisited = false;
-        board[i][j].isCheckpoint_visited = false;
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited_to_checkpoint");
-        document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
+    if (!isVisualizing) {
+      for (let i = 0; i < board.length; i++) {
+        for (let j = 0; j < board[0].length; j++) {
+          board[i][j].isVisited = false;
+          board[i][j].isCheckpoint_visited = false;
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("visited_to_checkpoint");
+          document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
+        }
       }
     }
   }
 
   const AddCheckPoint = () => {
-    const currAlgo = OPTIONS["algorithm"].find(algo => algo.value === algorithm);
-    if (currAlgo && currAlgo.checkPointNotAllowed) {
-      for (let i = 0; i < row; i++) {
-        for (let j = 0; j < col; j++) {
-          if (board[i][j].isCheckPoint) {
-            board[i][j].isCheckPoint = false;
-            document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("checkpoint");
-          }
-        }
-      }
-      setCheckPointAdded(false);
-      //SNACK BAR: CURRENT ALGORITHM DOES NOT SUPPORT CHECKPOINT
-      // showSnackBar("Selected Algorithm does not support CheckPoint !");
-    } else {
-      if (ischeckPointAdded) {
+    if (!isVisualizing) {
+      const currAlgo = OPTIONS["algorithm"].find(algo => algo.value === algorithm);
+      if (currAlgo && currAlgo.checkPointNotAllowed) {
         for (let i = 0; i < row; i++) {
           for (let j = 0; j < col; j++) {
             if (board[i][j].isCheckPoint) {
@@ -448,28 +445,42 @@ export default function PathFinder(props) {
           }
         }
         setCheckPointAdded(false);
+        //SNACK BAR: CURRENT ALGORITHM DOES NOT SUPPORT CHECKPOINT
+        // showSnackBar("Selected Algorithm does not support CheckPoint !");
       } else {
-        let row = 8;
-        let col = 20;
-        if (!board[8][20].isStart && !board[8][20].isEnd) {
-          row = 8;
-          col = 20;
-        } else if (!board[8][21].isStart && !board[8][21].isEnd) {
-          row = 8;
-          col = 21;
-        } else if (!board[8][19].isStart && !board[8][19].isEnd) {
-          row = 8;
-          col = 19;
+        if (ischeckPointAdded) {
+          for (let i = 0; i < row; i++) {
+            for (let j = 0; j < col; j++) {
+              if (board[i][j].isCheckPoint) {
+                board[i][j].isCheckPoint = false;
+                document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("checkpoint");
+              }
+            }
+          }
+          setCheckPointAdded(false);
+        } else {
+          let row = 8;
+          let col = 20;
+          if (!board[8][20].isStart && !board[8][20].isEnd) {
+            row = 8;
+            col = 20;
+          } else if (!board[8][21].isStart && !board[8][21].isEnd) {
+            row = 8;
+            col = 21;
+          } else if (!board[8][19].isStart && !board[8][19].isEnd) {
+            row = 8;
+            col = 19;
+          }
+          board[row][col].isVisited = false;
+          board[row][col].isCheckpoint_visited = false;
+          board[row][col].isCheckPoint = true;
+          document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("visited");
+          document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("visited_to_checkpoint");
+          document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("path");
+          document.querySelector(`#cell-${row}-${col} .cell`).classList.add("checkpoint");
+          setMatrix(board);
+          setCheckPointAdded(true);
         }
-        board[row][col].isVisited = false;
-        board[row][col].isCheckpoint_visited = false;
-        board[row][col].isCheckPoint = true;
-        document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("visited");
-        document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("visited_to_checkpoint");
-        document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("path");
-        document.querySelector(`#cell-${row}-${col} .cell`).classList.add("checkpoint");
-        setMatrix(board);
-        setCheckPointAdded(true);
       }
     }
   }
@@ -530,6 +541,7 @@ export default function PathFinder(props) {
           </tbody>
         </table>
       </div>
+      <Guide />
     </div>
   )
 }
