@@ -22,9 +22,9 @@ let board = [];
 
 let OPTIONS = {
   "algorithm": [
-    { name: "Breadth First Search", value: "bfs", method: visualize_BFS, isWeighted: false, checkPointNotAllowed: false },
     { name: "Dijkstra's Algorithm", value: "dijkstra", method: visualize_Dijkstra, isWeighted: true, checkPointNotAllowed: false },
     { name: "A* Search Algorithm", value: "astar", method: visualize_Astar, isWeighted: true, checkPointNotAllowed: false },
+    { name: "Breadth First Search", value: "bfs", method: visualize_BFS, isWeighted: false, checkPointNotAllowed: false },
     { name: "Depth First Search", value: "dfs", method: visualize_DFS, isWeighted: false, checkPointNotAllowed: false },
     { name: "Greedy Best First", value: "greedy", method: visualize_greedy, isWeighted: true, checkPointNotAllowed: false },
     { name: "Bi-directional BFS", value: "biBFS", method: visualize_biBFS, isWeighted: false, checkPointNotAllowed: true }
@@ -76,6 +76,7 @@ export default function PathFinder(props) {
   const [result, setResult] = useState(null);
   const [isCheckPointRelocating, setCheckPointRelocation] = useState(false);
   const [ischeckPointAdded, setCheckPointAdded] = useState(false);
+  const [guideDialog, setGuideDialog] = useState(true);
 
   const createBoard = () => {
     board = [];
@@ -541,13 +542,15 @@ export default function PathFinder(props) {
           </tbody>
         </table>
       </div>
-      <Guide />
+      {guideDialog ?
+        <Guide setGuideDialog={setGuideDialog} />
+        : <></>}
     </div>
   )
 }
 
 PathFinder.defaultProps = {
-  row: 20,
+  row: 25,
   col: 50,
   initial_start: { row: 8, col: 8 },
   initial_end: { row: 8, col: 40 }

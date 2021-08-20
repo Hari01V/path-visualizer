@@ -1,0 +1,117 @@
+.Guide-container{
+  width: 100vw;
+  max-width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  backdrop-filter: brightness(0.7);
+}
+.Guide{
+  width: 600px;
+  max-width: 80%;
+  height: fit-content;
+  /* border: rgb(19, 80, 247) solid 2px; */
+  background: #c8ebfa;
+  padding: 24px 20px 12px 20px;
+  margin: 80px 0 12px 0;
+  text-align: center;
+  border-radius: 16px;
+  backdrop-filter: brightness(0.5);
+  box-shadow: 0 0 1vw #2eccc5;
+}
+.Guide .Guide-Slide{
+  color: rgb(8, 26, 75);
+  font-family: -webkit-pictograph;
+  letter-spacing: 1px;
+  position: relative;
+}
+.Guide .Guide-Slide h1{
+  color: rgb(13, 58, 184);
+  font-size: 32px;
+  margin: 0;
+}
+.Guide .Guide-Slide h2{
+  color: rgb(8, 26, 75);
+  font-size: 18px;
+  font-weight: 300;
+  margin: 12px 8px 8px 8px;
+}
+.Guide .Guide-Slide p{
+  color: rgb(8, 26, 75);
+  font-size: 14px;
+  margin: 0 8px 16px 8px;
+}
+.Guide .Guide-Slide .guide-img{
+  max-width: 90%;
+  max-height: 280px;
+  border-radius: 12px;
+  box-shadow: 0 0 1vw #2eccc5;
+}
+.Guide .controls{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4px;
+}
+.Guide .controls-btn{
+  background: rgb(224 243 251);
+  border: none;
+  outline: none;
+  margin: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.Guide .controls-btn svg{
+  width: 40px;
+  height: 40px;
+  color: rgb(8, 26, 75);
+}
+.Guide #controls-left-btn{
+  margin-right: 32px;
+}
+.Guide #controls-right-btn{
+  margin-left: 32px;
+}
+.Guide .controls-btn:disabled svg{
+  color: rgb(141 171 255);
+}
+.Guide .controls-btn:hover{
+  box-shadow: 0 0 0.8vw #2eccc5;
+}
+.Guide .controls-btn:hover:disabled{
+  box-shadow: none;
+}
+.Guide .controls .guide-end{
+  color: rgb(8, 26, 75);
+  background: #c8ebfa;
+  padding: 12px 24px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  box-shadow: 0 0 0.8vw #2eccc5;
+  cursor: pointer;
+  position: absolute;
+  left: 50%;
+  bottom: -100%;
+  transform: translate(-50%, 0);
+}
+
+.page-indicator{
+  display: flex;
+}
+.page-indicator .indicator{
+  width: 8px;
+  height: 8px;
+  background: rgb(141, 171, 255);
+  border-radius: 50%;
+  margin: 4px 8px;
+}
+.page-indicator .indicator.active{
+  background: rgb(8, 26, 75);
+  box-shadow: 0 0 1vw #2eccc5;
+  transform: scale(1.2);
+}
