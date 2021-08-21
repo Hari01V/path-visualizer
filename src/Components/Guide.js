@@ -51,7 +51,7 @@ const pageSize = Object.keys(guide).length;
 
 export function Guide(props) {
 
-  let { setGuideDialog } = props;
+  let { setGuideDialog, guideDialog } = props;
   const [page, setPage] = useState(1);
 
   const handleNext = () => {
@@ -66,12 +66,16 @@ export function Guide(props) {
   }
 
   const handleEnd = () => {
+    setPage(1);
     setGuideDialog(false);
   }
 
   return (
-    <div className="Guide-container">
+    <div className={`Guide-container ${guideDialog ? "" : "tooltip"}`}>
       <div className="Guide">
+        {!guideDialog ?
+          <div className="tooltip-tag"></div>
+          : <></>}
         <div className="Guide-Slide">
           <h1>{guide[page].heading}</h1>
           <h2>{guide[page].subheading}</h2>
@@ -90,8 +94,10 @@ export function Guide(props) {
           </div>
           <button id="controls-right-btn" className="controls-btn"
             onClick={handleNext} disabled={page >= pageSize}><ArrowRightIcon /></button>
-          <button className="guide-end"
-            onClick={handleEnd}>End Tutorial</button>
+          {guideDialog ?
+            <button className="guide-end"
+              onClick={handleEnd}>End Tutorial</button>
+            : <></>}
         </div>
       </div>
     </div>

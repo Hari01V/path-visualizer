@@ -7,6 +7,10 @@
   justify-content: center;
   backdrop-filter: brightness(0.7);
 }
+.Guide-container.tooltip{
+  position: relative;
+  backdrop-filter: none;
+}
 .Guide{
   width: 600px;
   max-width: 80%;
@@ -17,10 +21,16 @@
   margin: 80px 0 12px 0;
   text-align: center;
   border-radius: 16px;
-  backdrop-filter: brightness(0.5);
   box-shadow: 0 0 1vw #2eccc5;
+  position: relative;
+}
+.Guide-container.tooltip .Guide{
+  width: 800px;
+  margin: 20px 0 12px 0;
+  box-shadow: none;
 }
 .Guide .Guide-Slide{
+  min-height: 460px;
   color: rgb(8, 26, 75);
   font-family: -webkit-pictograph;
   letter-spacing: 1px;
@@ -115,3 +125,164 @@
   box-shadow: 0 0 1vw #2eccc5;
   transform: scale(1.2);
 }
+
+.Guide-container.tooltip .Guide .tooltip-tag{
+  color: white;
+  background: rgb(8, 26, 75);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 4px 16px;
+  position: absolute;
+  left: 0px;
+  top: 0;
+}
+
+.tooltip-tag::after{
+  content: 'TOOLTIPS';
+  width: fit-content;
+  height: 14px;
+  color: white;
+  background: rgb(69 181 255);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'Courier New', Courier, monospace;
+  letter-spacing: 1.5px;
+  padding: 4px 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: -12px;
+}
+.tooltip-tag::before{
+  content: '';
+  width: 12px;
+  height: 20px;
+  /* background: rgb(216, 58, 0); */
+  background: rgb(48 142 205);
+  transform: skewY(40deg);
+  position: absolute;
+  top: 8px;
+  left: -12px;
+}
+
+@media (max-width: 1100px) {
+  .Guide .Guide-Slide h1{
+    font-size: 28px;
+  }
+  .Guide .Guide-Slide h2{
+    font-size: 18px;
+  }
+  .Guide .Guide-Slide p{
+    font-size: 14px;
+  }
+}
+@media (max-width: 780px) {
+  .Guide{
+    padding: 24px 16px 12px 16px;
+  }
+  .Guide .Guide-Slide h1{
+    font-size: 24px;
+  }
+  .Guide .Guide-Slide h2{
+    font-size: 16px;
+    margin: 12px 6px 8px 6px;
+  }
+  .Guide .Guide-Slide p{
+    font-size: 13px;
+    margin: 0 6px 16px 6px;
+  }
+  .Guide .Guide-Slide .guide-img{
+    max-width: 90%;
+    border-radius: 12px;
+  }
+  .Guide .controls-btn{
+    margin: 6px;
+    border-radius: 6px;
+  }
+  .Guide .controls-btn svg{
+    width: 32px;
+    height: 32px;
+  }
+  .Guide #controls-left-btn{
+    margin-right: 24px;
+  }
+  .Guide #controls-right-btn{
+    margin-left: 24px;
+  }
+  .Guide .controls .guide-end{
+    padding: 12px 16px;
+    border-radius: 6px;
+  }
+  .page-indicator .indicator{
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin: 4px 6px;
+  }
+  .Guide-container.tooltip .Guide .tooltip-tag{
+    padding: 4px 16px;
+  }
+  .tooltip-tag::after{
+    font-size: 14px;
+  }
+}
+/* @media (max-width: 780px) {
+  .Guide .Guide-Slide h1{
+    font-size: 28px;
+  }
+  .Guide .Guide-Slide h2{
+    font-size: 18px;
+    margin: 12px 8px 8px 8px;
+  }
+  .Guide .Guide-Slide p{
+    font-size: 14px;
+    margin: 0 8px 16px 8px;
+  }
+  .Guide .Guide-Slide .guide-img{
+    max-width: 90%;
+    border-radius: 12px;
+  }
+  .Guide .controls-btn{
+    margin: 8px;
+    border-radius: 8px;
+  }
+  .Guide .controls-btn svg{
+    width: 40px;
+    height: 40px;
+  }
+  .Guide #controls-left-btn{
+    margin-right: 32px;
+  }
+  .Guide #controls-right-btn{
+    margin-left: 32px;
+  }
+  .Guide .controls .guide-end{
+    padding: 12px 24px;
+    border-radius: 6px;
+  }
+  .page-indicator .indicator{
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin: 4px 8px;
+  }
+  .page-indicator .indicator.active{
+    transform: scale(1.2);
+  }
+  .Guide-container.tooltip .Guide .tooltip-tag{
+    padding: 4px 16px;
+  }
+
+  .tooltip-tag::after{
+    height: 14px;
+    font-size: 15px;
+    padding: 4px 12px;
+  }
+  .tooltip-tag::before{
+    width: 12px;
+    height: 20px;
+    transform: skewY(40deg);
+  }
+} */
