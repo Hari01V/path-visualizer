@@ -45,7 +45,7 @@ const recursiveDivision = (board, speed, weight, setVisualizing) => {
   divideChamber(board, row_range, col_range, 0, wait_time_factor);
   setTimeout(() => {
     setVisualizing(false);
-  }, 15000);
+  }, time_count * wait_time_factor);
 }
 
 const randomNumber = (from, to, avoid) => {

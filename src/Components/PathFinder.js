@@ -14,6 +14,7 @@ import visualize_biBFS from '../Algorithms/bidirectionalBFS';
 
 import recursiveDivision from '../MazeAlgorithms/recursiveDivision';
 import weightHexCage from '../MazeAlgorithms/weightHexCage';
+import concentricMaze from '../MazeAlgorithms/concentricMaze';
 import { Guide } from './Guide';
 
 // import LockIcon from '@material-ui/icons/Lock';
@@ -36,7 +37,8 @@ let OPTIONS = {
   ],
   "maze": [
     { name: "Recursive Division", method: recursiveDivision, value: "recursive-div" },
-    { name: "Weight Hex Cage", method: weightHexCage, value: "weight-hex" }
+    { name: "Weight Hex Cage", method: weightHexCage, value: "weight-hex" },
+    { name: "Concentric Maze", method: concentricMaze, value: "concentric" }
   ],
   "weight": [
     { name: "very less : 5", value: 5 },
