@@ -80,7 +80,7 @@ const concentricMaze = (board, speed, weight, setVisualizing) => {
         time_count++;
       }
     }
-    distance = distance + 4;
+    distance = distance + 5;
   }
 
   setTimeout(() => {
