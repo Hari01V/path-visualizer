@@ -55,3 +55,65 @@
 .dropdown-list .dropdown-list-item:hover{
   background: #0c3547;
 }
+
+@media (max-width: 1200px) {
+  .dropdown{
+    margin: 0px 6px;
+    padding-bottom: 8px;
+  }
+  .dropdown-title{
+    font-size: 16px;
+    padding: 6px 16px 0 16px;
+  }
+  .dropdown-title svg{
+    width: 24px;
+    height: 24px;
+  }
+  .dropdown-list{
+    padding: 8px 14px;
+    margin: 4px;
+  }
+  .dropdown-list .dropdown-list-item{
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+}
+@media (max-width: 1000px) {
+  .dropdown{
+    margin: 0px 4px;
+  }
+  .dropdown-title{
+    font-size: 15px;
+    padding: 6px 16px 0 16px;
+  }
+  .dropdown-title svg{
+    width: 24px;
+    height: 24px;
+  }
+  .dropdown-list{
+    padding: 8px 14px;
+    margin: 4px;
+  }
+  .dropdown-list .dropdown-list-item{
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+}
+@media (max-width: 800px) {
+  .dropdown-title{
+    font-size: 14px;
+    padding: 6px 12px 0 12px;
+  }
+  .dropdown-title svg{
+    width: 24px;
+    height: 24px;
+  }
+  .dropdown-list{
+    padding: 8px 12px;
+    margin: 4px;
+  }
+  .dropdown-list .dropdown-list-item{
+    padding: 6px 10px;
+    font-size: 14px;
+  }
+}
