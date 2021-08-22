@@ -4,6 +4,12 @@ import Navbar from './Navbar';
 
 import '../styles/PathFinder.css';
 
+import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
+import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
+
 import { OPTIONS, ALGO_DESC } from '../database/helper';
 
 import { Guide } from './Guide';
@@ -30,6 +36,16 @@ export default function PathFinder(props) {
   const [isCheckPointRelocating, setCheckPointRelocation] = useState(false);
   const [ischeckPointAdded, setCheckPointAdded] = useState(false);
   const [guideDialog, setGuideDialog] = useState(true);
+
+  //SNACKBAR
+  const [snackOpen, setSnackOpen] = useState(false);
+  const [snackMsg, setSnackMsg] = useState(undefined);
+  const snackHandleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackOpen(false);
+  };
 
   const createBoard = () => {
     board = [];
@@ -100,11 +116,14 @@ export default function PathFinder(props) {
     document.querySelector(".algo-desc").innerHTML = ALGO_DESC[algorithm];
     const algo = OPTIONS["algorithm"].find(algo => algo.value === algorithm);
     if (algo && !algo.isWeighted) {
-      clearWeights();
-      //SNACK BAR: CURR ALGORITHM IS UNWEIGHTED!
-      // showSnackBar("Selected Algorithm is Unweighted, so the weights have been removed!");
+      let need = clearWeights();
+      if (need) {
+        //SNACK BAR: CURR ALGORITHM IS UNWEIGHTED!
+        setSnackMsg("Weights have been removed!")
+        setSnackOpen(true);
+      }
     }
-    if (algo && algo.checkPointNotAllowed) {
+    if (algo && algo.checkPointNotAllowed && ischeckPointAdded) {
       AddCheckPoint();
     }
   }, [algorithm])
@@ -112,14 +131,16 @@ export default function PathFinder(props) {
   const visualize = () => {
     if (!isVisualizing) {
       clearPath();
-
       const currAlgorithm = OPTIONS.algorithm.find(item => item.value === algorithm);
       if (currAlgorithm) {
         setVisualizing(true);
         if (!currAlgorithm.isWeighted) {
-          clearWeights();
-          //SNACK BAR: CURR ALGORITHM IS UNWEIGHTED!
-          // showSnackBar("Selected Algorithm is Unweighted, so the weights have been removed!");
+          let need = clearWeights();
+          if (need) {
+            //SNACK BAR: CURR ALGORITHM IS UNWEIGHTED!
+            setSnackMsg("Weights have been removed!")
+            setSnackOpen(true);
+          }
         }
         currAlgorithm.method(board, setVisualizing, speed, setResult);
       } else {
@@ -318,13 +339,19 @@ export default function PathFinder(props) {
           document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("weight-vh");
         }
       }
+      setSnackMsg("Cleared Walls");
+      setSnackOpen(true);
     }
   }
 
   const clearWeights = () => {
     if (!isVisualizing) {
+      let need = false;
       for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[0].length; j++) {
+          if (board[i][j].weight != 1) {
+            need = true;
+          }
           board[i][j].weight = 1;
           const cell = document.querySelector(`#cell-${i}-${j} .cell`);
           cell.classList.remove("weight-vl");
@@ -334,9 +361,9 @@ export default function PathFinder(props) {
           cell.classList.remove("weight-vh");
         }
       }
+      return need;
     }
   }
-
 
   const resetBoard = () => {
     if (!isVisualizing) {
@@ -369,6 +396,8 @@ export default function PathFinder(props) {
         board.push(row);
       }
       setMatrix(board);
+      setSnackMsg("Board Reset");
+      setSnackOpen(true);
     }
   }
 
@@ -383,6 +412,8 @@ export default function PathFinder(props) {
           document.querySelector(`#cell-${i}-${j} .cell`).classList.remove("path");
         }
       }
+      setSnackMsg("Cleared Path");
+      setSnackOpen(true);
     }
   }
 
@@ -400,7 +431,8 @@ export default function PathFinder(props) {
         }
         setCheckPointAdded(false);
         //SNACK BAR: CURRENT ALGORITHM DOES NOT SUPPORT CHECKPOINT
-        // showSnackBar("Selected Algorithm does not support CheckPoint !");
+        setSnackMsg("Bidir-BFS does not support CheckPoint!");
+        setSnackOpen(true);
       } else {
         if (ischeckPointAdded) {
           for (let i = 0; i < row; i++) {
@@ -412,6 +444,8 @@ export default function PathFinder(props) {
             }
           }
           setCheckPointAdded(false);
+          setSnackMsg("Removed CheckPoint!");
+          setSnackOpen(true);
         } else {
           let row = 8;
           let col = 20;
@@ -434,6 +468,8 @@ export default function PathFinder(props) {
           document.querySelector(`#cell-${row}-${col} .cell`).classList.add("checkpoint");
           setMatrix(board);
           setCheckPointAdded(true);
+          setSnackMsg("Added CheckPoint!");
+          setSnackOpen(true);
         }
       }
     }
@@ -496,6 +532,25 @@ export default function PathFinder(props) {
         </table>
       </div>
       <Guide setGuideDialog={setGuideDialog} guideDialog={guideDialog} />
+      {snackMsg ?
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={snackOpen}
+          autoHideDuration={3000}
+          onClose={snackHandleClose}
+          message={snackMsg}
+          action={
+            <React.Fragment>
+              <IconButton size="small" aria-label="close" color="inherit" onClick={snackHandleClose}>
+                <CloseIcon fontSize="small" />
+              </IconButton>
+            </React.Fragment>
+          }
+        />
+        : <></>}
     </div>
   )
 }

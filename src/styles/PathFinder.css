@@ -65,6 +65,10 @@
   padding: 0;
 }
 
+.MuiSnackbar-root .MuiSnackbarContent-root{
+  background: #2093ee;
+}
+
 @media (max-width: 1100px) {
   .path-finder .algo-desc{
     padding: 0 40px;

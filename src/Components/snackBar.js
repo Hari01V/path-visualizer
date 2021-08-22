@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -11,7 +11,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ConsecutiveSnackbars() {
+export default function ConsecutiveSnackbars(props) {
+  let { snackBarMsg } = props;
+
   const [snackPack, setSnackPack] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const [messageInfo, setMessageInfo] = React.useState(undefined);
@@ -27,6 +29,10 @@ export default function ConsecutiveSnackbars() {
       setOpen(false);
     }
   }, [snackPack, messageInfo, open]);
+
+  useEffect(() => {
+    showSnackBar(snackBarMsg);
+  });
 
   const showSnackBar = (message) => () => {
     setSnackPack((prev) => [...prev, { message, key: new Date().getTime() }]);
@@ -44,9 +50,10 @@ export default function ConsecutiveSnackbars() {
   };
 
   const classes = useStyles();
+
   return (
     <div>
-      <Button onClick={showSnackBar('Message A')}>SNACK BAR</Button>
+      {/* <Button onClick={showSnackBar('Message A')}>SNACK BAR</Button> */}
       <Snackbar
         key={messageInfo ? messageInfo.key : undefined}
         anchorOrigin={{
