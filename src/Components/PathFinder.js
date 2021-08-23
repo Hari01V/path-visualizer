@@ -4,7 +4,6 @@ import Navbar from './Navbar';
 
 import '../styles/PathFinder.css';
 
-import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
@@ -395,7 +394,8 @@ export default function PathFinder(props) {
         }
         board.push(row);
       }
-      setMatrix(board);
+      // setMatrix(board);
+      setCheckPointAdded(false);
       setSnackMsg("Board Reset");
       setSnackOpen(true);
     }
@@ -466,7 +466,7 @@ export default function PathFinder(props) {
           document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("visited_to_checkpoint");
           document.querySelector(`#cell-${row}-${col} .cell`).classList.remove("path");
           document.querySelector(`#cell-${row}-${col} .cell`).classList.add("checkpoint");
-          setMatrix(board);
+          // setMatrix(board);
           setCheckPointAdded(true);
           setSnackMsg("Added CheckPoint!");
           setSnackOpen(true);
