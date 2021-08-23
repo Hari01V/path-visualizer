@@ -29,6 +29,7 @@
 }
 .dropdown:hover{
   background: #002433;
+  box-shadow: 0 0 1vw #002231;
 }
 .dropdown-list{
   width: max-content;

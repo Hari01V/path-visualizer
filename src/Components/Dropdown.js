@@ -50,7 +50,7 @@ export default function Dropdown(props) {
   return (
     <div className="dropdown" id={`dropdown-${title}`}
       onClick={handleClick}
-      style={isOpen ? { background: '#002433' } : {}}
+      style={isOpen ? { background: '#002433', boxShadow: '0 0 1vw #002231' } : {}}
       aria-controls="simple-menu" aria-haspopup="true">
       <div className="dropdown-title">{title === "Speed" || title === "Weight" ? `${title}: ${currentOption}` : title} <ArrowDropDownIcon /></div>
       {title === "Algorithm" ?
