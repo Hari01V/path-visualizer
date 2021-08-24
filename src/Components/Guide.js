@@ -17,14 +17,14 @@ let guide = {
     heading: "Welcome to Path Visualizer",
     subheading: "Check out the features and options here",
     content: ["You can simply skip the tutorial if needed!"],
-    imgPath: page1Img,
+    imgPath: page2Img,
     alt: "welcome img"
   },
   2: {
     heading: "How does this work ?",
     subheading: "Path Finding Graph Algorithms is used to find Path between two Points (Start and End, even a single checkpoint)",
     content: ["Position the Start node, and then the End node. Now, Select an algorithm to visualize it.", "Walls and weights can also be added to simulate mazes or maps."],
-    imgPath: page2Img,
+    imgPath: page1Img,
     alt: "example"
   },
   3: {

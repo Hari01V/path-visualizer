@@ -1,6 +1,8 @@
 import React from 'react';
 import Dropdown from '../Components/Dropdown';
 
+import icon from '../images/icon.svg';
+
 import '../styles/Navbar.css';
 
 export default function Navbar(props) {
@@ -14,7 +16,7 @@ export default function Navbar(props) {
 
   return (
     <div className="navbar">
-      <a href="/" className="navbar-brand">Path <br></br>Visualizer</a>
+      <a href="/" className="navbar-brand"><img src={icon} alt="icon" /><span>Path <br></br>Visualizer</span></a>
       <div className="navbar-content">
         <div className="content-1">
           <Dropdown title={"Algorithm"} list={algoList} setAlgorithm={setAlgorithm} />
