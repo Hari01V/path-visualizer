@@ -16,7 +16,7 @@ export default function Navbar(props) {
 
   return (
     <div className="navbar">
-      <a href="/" className="navbar-brand"><img src={icon} alt="icon" /><span>Path <br></br>Visualizer</span></a>
+      <a href="/path-visualizer/" className="navbar-brand"><img src={icon} alt="icon" /><span>Path <br></br>Visualizer</span></a>
       <div className="navbar-content">
         <div className="content-1">
           <Dropdown title={"Algorithm"} list={algoList} setAlgorithm={setAlgorithm} />
