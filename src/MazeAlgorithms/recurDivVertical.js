@@ -125,7 +125,7 @@ const divideChamber = (board, row_range, col_range, row_or_col, wait_time_factor
     random_cell = randomNumber(col_range.from, col_range.to, []);
 
     for (let i = col_range.from; i <= col_range.to; i++) {
-      if (!(board[random_line][i].isStart) && !(board[random_line][i].isEnd)) {
+      if (!(board[random_line][i].isStart) && !(board[random_line][i].isEnd) && !(board[random_line][i].isCheckPoint)) {
         if (random_cell !== i) {
           board[random_line][i].isWall = true;
           setTimeout(() => {
@@ -163,7 +163,7 @@ const divideChamber = (board, row_range, col_range, row_or_col, wait_time_factor
     random_cell = randomNumber(row_range.from, row_range.to, []);
 
     for (let i = row_range.from; i <= row_range.to; i++) {
-      if (!(board[i][random_line].isStart) && !(board[i][random_line].isEnd)) {
+      if (!(board[i][random_line].isStart) && !(board[i][random_line].isEnd) && !(board[i][random_line].isCheckPoint)) {
         if (random_cell !== i) {
           board[i][random_line].isWall = true;
           setTimeout(() => {

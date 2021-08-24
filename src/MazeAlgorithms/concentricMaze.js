@@ -64,14 +64,14 @@ const concentricMaze = (board, speed, weight, setVisualizing) => {
       if (col1 === col_leave || col2 === col_leave) {
         continue;
       }
-      if (col1 <= col_range.to && col1 >= col_range.from && !board[i][col1].isStart && !board[i][col1].isEnd) {
+      if (col1 <= col_range.to && col1 >= col_range.from && !board[i][col1].isStart && !board[i][col1].isEnd && !board[i][col1].isCheckPoint) {
         board[i][col1].isWall = true;
         setTimeout(() => {
           document.querySelector(`#cell-${i}-${col1} .cell`).classList.add("wall");
         }, time_count * wait_time_factor);
         time_count++;
       }
-      if (col2 <= col_range.to && col2 >= col_range.from && !board[i][col2].isStart && !board[i][col2].isEnd) {
+      if (col2 <= col_range.to && col2 >= col_range.from && !board[i][col2].isStart && !board[i][col2].isEnd && !board[i][col2].isCheckPoint) {
         board[i][col2].isWall = true;
         setTimeout(() => {
           document.querySelector(`#cell-${i}-${col2} .cell`).classList.add("wall");
