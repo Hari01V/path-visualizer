@@ -7,7 +7,6 @@ import '../styles/PathFinder.css';
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
-import NotificationsNoneIcon from '@material-ui/icons/NotificationsNone';
 
 import { OPTIONS, ALGO_DESC } from '../database/helper';
 
@@ -129,9 +128,9 @@ export default function PathFinder(props) {
 
   const visualize = () => {
     if (!isVisualizing) {
-      clearPath();
       const currAlgorithm = OPTIONS.algorithm.find(item => item.value === algorithm);
       if (currAlgorithm) {
+        clearPath();
         setVisualizing(true);
         if (!currAlgorithm.isWeighted) {
           let need = clearWeights();
@@ -348,7 +347,7 @@ export default function PathFinder(props) {
       let need = false;
       for (let i = 0; i < board.length; i++) {
         for (let j = 0; j < board[0].length; j++) {
-          if (board[i][j].weight != 1) {
+          if (board[i][j].weight !== 1) {
             need = true;
           }
           board[i][j].weight = 1;

@@ -17,13 +17,15 @@ let guide = {
     heading: "Welcome to Path Visualizer",
     subheading: "Check out the features and options here",
     content: ["You can simply skip the tutorial if needed!"],
-    imgPath: page1Img
+    imgPath: page1Img,
+    alt: "welcome img"
   },
   2: {
     heading: "How does this work ?",
     subheading: "Path Finding Graph Algorithms is used to find Path between two Points (Start and End, even a single checkpoint)",
-    content: ["Walls and weights can be added in a 2D Grid And then Shortest path is computed and Visualized depending on the Algorithm used."],
-    imgPath: page2Img
+    content: ["Position the Start node, and then the End node. Now, Select an algorithm to visualize it.", "Walls and weights can also be added to simulate mazes or maps."],
+    imgPath: page2Img,
+    alt: "example"
   },
   3: {
     heading: "Graph Algorithms",
@@ -34,40 +36,46 @@ let guide = {
       "Depth First Search - Unweighted and does not guarantee the shortest path. Not suitable for Path Findings.",
       "Greedy Best First Search - Weighted, does not guarantee the shortest path. Depends more on the Heuristics.",
       "Bi-directional BFS - Unweighted, does not guarantee the shortest path. Performs BFS from both sides."],
-    imgPath: undefined
+    imgPath: undefined,
+    alt: undefined
   },
   4: {
     heading: "Adding Walls and Weights",
     subheading: "Walls are like deadends, whereas weights add some path cost to the route",
     content: ["Walls can be added by clicking on the Grid",
       "Weights can be added by clicking on the grid while pressing 'W'"],
-    imgPath: WallsWeights
+    imgPath: WallsWeights,
+    alt: "walls and weights"
   },
   5: {
     heading: "Weights classification",
     subheading: "You can find 5 different weights from Weight Dropdown",
     content: ["Each Weight imposes different amount of Cost on the route. Weights ranging from 5 to 50 path costs, are shown in different colours (grey to red respectively) on the grid"],
-    imgPath: weights
+    imgPath: weights,
+    alt: "weight types"
   },
   6: {
     heading: "Add CheckPoint",
     subheading: "Path from Start to CheckPoint and then reach End from CheckPoint. Path between 3 points on the Grid.",
     content: ["CheckPoint connect the path between start and end",
       "Note: Bi-directional BFS algorithm and checkpoint is not supported together!"],
-    imgPath: checkpoint
+    imgPath: checkpoint,
+    alt: "checkpoint"
   },
   7: {
     heading: "Results",
     subheading: "what would be the time taken or other info after the algorithm ends?",
     content: ["Number of Visited Nodes, Time Taken and the Path Cost is shown as results once the Algorithm ends.",
       "Path cost of each cell is considered to be 1 unless it is weighted. If it is weighted, Path cost is the cost of the Weights applied"],
-    imgPath: results
+    imgPath: results,
+    alt: "result"
   },
   8: {
     heading: "Visualize",
     subheading: "Try out different Pathfinding Algorithms and Randomized mazes! Check out this project on ",
     content: [""],
-    imgPath: page2Img
+    imgPath: page2Img,
+    alt: "visualize"
   }
 }
 
@@ -79,12 +87,12 @@ export function Guide(props) {
   const [page, setPage] = useState(1);
 
   const handleNext = () => {
-    if (page != pageSize) {
+    if (page !== pageSize) {
       setPage(page + 1);
     }
   }
   const handlePrevious = () => {
-    if (page != 1) {
+    if (page !== 1) {
       setPage(page - 1);
     }
   }
@@ -102,11 +110,12 @@ export function Guide(props) {
           : <></>}
         <div className="Guide-Slide">
           <h1>{guide[page].heading}</h1>
-          <h2>{guide[page].subheading} {page === 8 ? <a href="https://github.com/Hari01V/path-visualizer">Github</a> : ""}</h2>
-          {guide[page].content.map(para =>
-            <p>{para}</p>
+          <h2>{guide[page].subheading} {page === 8 ? <a href="https://github.com/Hari01V/path-visualizer" target="_blank" rel="noopener noreferrer">Github</a> : ""}</h2>
+          {guide[page].content.map((para, index) =>
+            <p key={index}>{para}</p>
           )}
           <img src={guide[page].imgPath}
+            alt={guide[page].alt}
             className="guide-img" />
         </div>
         <div className="controls">
@@ -114,7 +123,7 @@ export function Guide(props) {
             onClick={handlePrevious} disabled={page <= 1}><ArrowLeftIcon /></button>
           <div className="page-indicator">
             {Object.keys(guide).map(key =>
-              <div className={`indicator ${page == key ? "active" : "hi"}`}
+              <div className={`indicator ${page == key ? "active" : ""}`}
                 key={key}></div>
             )}
           </div>

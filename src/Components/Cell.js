@@ -1,7 +1,6 @@
 import React from 'react';
 import GpsFixedIcon from '@material-ui/icons/GpsFixed';
 import GolfCourseIcon from '@material-ui/icons/GolfCourse';
-import RoomIcon from '@material-ui/icons/Room';
 
 import '../styles/Cell.css';
 
@@ -25,9 +24,6 @@ export default function Cell(props) {
       class_name += " weight-vh ";
     }
   }
-  if (row === 0 && col === 0) {
-    console.log("rerendered");
-  }
 
   return (
     <div className={class_name}
@@ -38,7 +34,6 @@ export default function Cell(props) {
       onMouseLeave={onMouseLeave}>
       {isEnd ? <GolfCourseIcon /> : ""}
       {isStart ? <GpsFixedIcon /> : ""}
-      {/* {isCheckPoint ? <RoomIcon /> : ""} */}
     </div>
   )
 }

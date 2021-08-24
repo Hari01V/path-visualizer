@@ -74,7 +74,7 @@ const visualize_Astar = (board, setVisualizing, speed, setResult) => {
     pathCost += weight;
     setTimeout(() => {
       document.querySelector(`#cell-${row}-${col} .cell`).classList.add("path");
-      if (i == 0) {
+      if (i === 0) {
         setVisualizing(false);
         setResult(result);
       }

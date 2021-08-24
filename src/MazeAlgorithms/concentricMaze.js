@@ -48,7 +48,6 @@ const concentricMaze = (board, speed, weight, setVisualizing) => {
     row: randomNumber(middle_row - 5, middle_row + 5),
     col: randomNumber(middle_col - 10, middle_col + 10)
   }
-  console.log(center);
   let distance = 1;
   while (distance < col_range.to) {
     let i_from = Math.max(row_range.from, center.row - distance);
@@ -57,12 +56,12 @@ const concentricMaze = (board, speed, weight, setVisualizing) => {
     let col_leave = randomNumber((center.col - distance) >= 0 ? center.col - distance : 0,
       (center.col + distance) < col_range.to ? center.col + distance : col_range.to);
     for (let i = i_from; i <= i_to; i++) {
-      if (i == i_leave) {
+      if (i === i_leave) {
         continue;
       }
       let col1 = center.col + Math.abs(distance - Math.abs(center.row - i));
       let col2 = center.col - Math.abs(distance - Math.abs(center.row - i));
-      if (col1 == col_leave || col2 == col_leave) {
+      if (col1 === col_leave || col2 === col_leave) {
         continue;
       }
       if (col1 <= col_range.to && col1 >= col_range.from && !board[i][col1].isStart && !board[i][col1].isEnd) {
