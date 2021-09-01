@@ -393,10 +393,12 @@ export default function PathFinder(props) {
         }
         board.push(row);
       }
-      // setMatrix(board);
+      setStart(initial_start);
+      setEnd(initial_end);
       setCheckPointAdded(false);
       setSnackMsg("Board Reset");
       setSnackOpen(true);
+      setMatrix(board);
     }
   }
 
